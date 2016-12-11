@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ftio.h"
 
 static int			prepare_args(char *str, void *data,
 						int (*compute_options)(void*, char*))

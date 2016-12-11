@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ftio.h"
+#include "ftstring.h"
 #include "libft.h"
-#include <unistd.h>
-#define BUFF_SIZE 4096
+#include "unistd.h"
 
 static t_buff	*init_buff(t_buff *before, int fd)
 {
@@ -92,7 +93,8 @@ int				get_next_line(int const fd, char **line)
 		*line = ft_strsub(c->buff, 0, ft_strchr(c->buff, '\n') - c->buff + 1);
 	if (ret)
 		*(*(line) + ft_strlen(*line) - 1) = '\0';
-	c->buff = substr(c->buff, ft_strchr(c->buff, '\n')
-			- c->buff + 1, ft_strlen(ft_strchr(c->buff, '\n')));
+	if(ft_strchr(c->buff, '\n'))
+		c->buff = substr(c->buff, ft_strchr(c->buff, '\n') - c->buff + 1,
+			ft_strlen(ft_strchr(c->buff, '\n')));
 	return (ret > 0 ? 1 : ft_strlen(*line) != 0);
 }

@@ -15,7 +15,7 @@ PRGFLAGS = -lft
 CC = gcc
 
 NAME = asm
-LIB = libft
+LIB = ../libft
 SRC = main.c op.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c
 SRCDIR = src
 OUTDIR = out
@@ -24,7 +24,7 @@ OBJ = $(addprefix $(OUTDIR)/, $(SRC:.c=.o))
 
 $(NAME): $(OUTDIR) $(OBJ)
 	@(cd $(LIB) && $(MAKE))
-	$(CC) -o $(NAME) $(CFLAGS) -I./libft -L./libft/ $(OBJ) $(PRGFLAGS)
+	$(CC) -o $(NAME) $(CFLAGS) -I../libft/ -L../libft/ $(OBJ) $(PRGFLAGS)
 
 all: $(NAME)
 

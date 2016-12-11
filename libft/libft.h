@@ -19,7 +19,7 @@
 
 # define PTR  2
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 4096
 
 typedef unsigned int	t_flags;
 
@@ -79,4 +79,39 @@ size_t			count_digit_base(unsigned int n, unsigned int base);
 char			*get_env(const char *name);
 char			*get_path(int index);
 
+typedef struct		s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
+}					t_list;
+
+t_list			*ft_lstnew(void const *content, size_t content_size);
+void			ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
+void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+void			ft_lstadd(t_list **alst, t_list *new);
+void			ft_lstiter(t_list *lst, void (*f)(t_list *));
+t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
+t_list			*ft_lstget(t_list *lst, void *data, size_t data_size);
+size_t			ft_lstsize(t_list *lst);
+void			*ft_memalloc(size_t size);
+void			ft_memdel(void **ap);
+int				ft_parse_args(int ac, char **av, void *data,
+					int (*compute_options)(void*, char*));
+int				ft_usage(char *prg_name, char *usage, char illegal_char);
+char			*ft_error_return(char *str, char *code);
+int				ft_error_retint(char *str, int code);
+
+typedef struct		s_buff
+{
+	int				fd;
+	char			*buff;
+	struct s_buff	*next;
+}					t_buff;
+
+t_buff				**get_gnl_buffer(void);
+int					get_next_line(int const fd, char **line);
+void				resource_manager_destroy(void);
+char				*ft_strnew(size_t size);
+void				ft_strdel(char **as);
 #endif

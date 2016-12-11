@@ -1,7 +1,12 @@
 #ifndef H_ASSEMBLER
 # define H_ASSEMBLER
 # include "libft.h"
+# include "ftstring.h"
+# include "ft_get_next.h"
+# include "ftio.h"
 # include "op.h"
+# include <stdlib.h>
+# include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
 
