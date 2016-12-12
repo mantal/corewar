@@ -114,4 +114,8 @@ int					get_next_line(int const fd, char **line);
 void				resource_manager_destroy(void);
 char				*ft_strnew(size_t size);
 void				ft_strdel(char **as);
+int					is_le(void);
+int					is_be(void);
+short				swap_short(short lt);
+unsigned int		swap_uint(unsigned int lt);
 #endif

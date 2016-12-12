@@ -16,7 +16,7 @@ CC = gcc
 
 NAME = asm
 LIB = ../libft
-SRC = main.c op.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c
+SRC = main.c op.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c write_output.c encoder.c
 SRCDIR = src
 OUTDIR = out
 SRCS = $(addprefix $(SRCDIR)/, $(SRC))

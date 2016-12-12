@@ -76,4 +76,6 @@ int             error_wrong_param_type(t_inst *inst, int index);
 long int		ft_atoli(char *str);
 int				error_wrong_param_number_impl(t_inst *instruction, int line_number);
 int             error_label_not_found(t_inst *inst, int offset, int index);
+int				write_output(t_env *env, char *fname);
+void			encode_inst(t_inst *inst, char *data, int *pos);
 #endif

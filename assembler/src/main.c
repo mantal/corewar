@@ -25,6 +25,7 @@ int     main(int ac, char **av)
         if (env && parse_file(env, *(av + 1)) && is_data_correct(env))
         {
             ft_printf("compillation done!\nname: %s\ndesc: %s\n", env->header.prog_name, env->header.comment);
+            write_output(env, *(av + 1));
         }
         // TODO: free env
     }

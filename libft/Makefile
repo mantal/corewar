@@ -57,7 +57,7 @@ SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 																			\
 			args.c ft_memalloc.c ft_memdel.c ft_prgm.c				 		\
 																			\
-			ft_strdel.c	ft_strnew.c											\
+			ft_strdel.c	ft_strnew.c endian.c								\
 																			\
 			$(addprefix get_next_line/, $(GNL)) 							\
 			$(addprefix list/, $(LIST))
@@ -65,7 +65,6 @@ SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 OBJ		= $(SRC:.c=.o)
 CFLAGS	= -Wall -Wextra -Weverything -std=c11 -g3 -O0 \
 		  -Wno-padded -Wno-pointer-arith -Wno-float-equal -Wno-shorten-64-to-32 -Wno-conversion -Wno-incompatible-pointer-types-discards-qualifiers
-
 
 all: $(NAME)
 

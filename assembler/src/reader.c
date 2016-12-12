@@ -34,6 +34,5 @@ int			parse_file(t_env *env, char *fname)
         error = 1;
         perror("asm");
     }
-    
     return (!error);
 }
