@@ -12,36 +12,43 @@
 
 UNAME=$(shell uname)
 PROJECT= COREWAR
-NAME=corewar
-LIB = libft
+NAME=common
+LIB = ../libft
 
-all: compiler corewar
+CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
+	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
+	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
+	-I./includes
 
-common:
-	@(cd common && $(MAKE) -s)
+SRC = op.c
+SRCDIR = src
+OUTDIR= out/
+SRCS = $(addprefix $(SRCDIR)/, $(SRC))
+OBJ = $(addprefix $(OUTDIR)/, $(SRC:.c=.o))
 
-compiler: common
-	@(cd compiler && $(MAKE) -s)
+all: $(NAME)
 
-corewar: common
-	@(cd vm && $(MAKE) -s)
+$(NAME): $(OUTDIR) $(OBJ)
+	@(cd $(LIB) && $(MAKE));
+
+$(OUTDIR)/%.o: $(SRCDIR)/%.c
+	@$(CC) -I $(LIB)/includes -o $@ -c $? $(CFLAGS)
 
 clean:
-	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
-	@(cd vm && $(MAKE) $@);
+	@(cd $(LIB) && $(MAKE) $@);
 	@rm -f $(OBJ)
 
-fclean: clean
-	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
-	@(cd vm && $(MAKE) $@);
+$(OUTDIR):
+	@mkdir -p $(OUTDIR)
 
-.PHONY: clean fclean re all common compiler corewar
+fclean: clean
+	@(cd $(LIB) && $(MAKE) $@);
+	@rm -f $(NAME)
+	@rm -rf $(OUTDIR)
+
+.PHONY: clean fclean re all $(NAME) suicide
 
 re: fclean all
 
 suicide: fclean
-	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
-	@(cd vm && $(MAKE) $@);
+	@rm -rf $(SRCDIR)
