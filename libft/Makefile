@@ -61,6 +61,8 @@ SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 			ft_strdel.c	ft_strnew.c endian.c								\
 																			\
 			$(addprefix get_next_line/, $(GNL)) 							\
+			                                                                \
+			endianess.c                                                     \
 			$(addprefix list/, $(LIST))
 
 OBJ		= $(SRC:.c=.o)

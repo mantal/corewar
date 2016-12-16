@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftendianess.h                                      :+:      :+:    :+:   */
+/*   load.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/18 16:43:40 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:50:04 by dlancar          ###   ########.fr       */
+/*   Created: 2016/12/14 15:16:38 by dlancar           #+#    #+#             */
+/*   Updated: 2016/12/14 15:16:50 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTENDIANESS_H
-# define FTENDIANESS_H
+#ifndef LOAD_H
+# define LOAD_H
 
-# include "libft.h"
-# include <stdint.h>
-# include <stddef.h>
-
-# ifdef __APPLE__
-#  include <libkern/OSByteOrder.h>
-#  define SWAP_16(x) (OSSwapConstInt16(x))
-#  define SWAP_32(x) (OSSwapConstInt32(x))
-#  define SWAP_64(x) (OSSwapConstInt64(x))
-# elif __WIN32__
-#  define SWAP_16(x) (TODO)
-# elif __linux__ || __unix__
-# endif
-
-void	swapInt32(uint32_t *i);
+t_program	*load_program(const char *path);
 
 #endif
