@@ -12,7 +12,7 @@
 
 UNAME=$(shell uname)
 PROJECT= COREWAR
-NAME=common
+NAME=common.a
 LIB = ../libft
 
 CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
@@ -30,6 +30,8 @@ all: $(NAME)
 
 $(NAME): $(OUTDIR) $(OBJ)
 	@(cd $(LIB) && $(MAKE));
+	@ar rc $(NAME) $(OBJ) $(LIB)/*.o
+	@ranlib $(NAME)
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) -I $(LIB)/includes -o $@ -c $? $(CFLAGS)
