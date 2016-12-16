@@ -5,11 +5,11 @@ static void		encode_parameter(t_param *param, char *data, int *pos)
 	int		tmp;
 
 	if (param->required_bytes == 1)
-		data[*pos] = param->integer_value;
+		data[*pos] = (char)param->integer_value;
 	else
 	{
 		if (param->required_bytes == 2)
-			tmp = swap_short(param->integer_value);
+			tmp = swap_short((short)param->integer_value);
 		else
 			tmp = swap_uint(param->integer_value);
 		ft_memcpy(data + *pos, &tmp, param->required_bytes);
@@ -56,7 +56,7 @@ static char	    encode_opcode_extra(t_inst *inst)
 
 void	    	encode_inst(t_inst *inst, char *data, int *pos)
 {
-	data[(*pos)++] = inst->index + 1;
+	data[(*pos)++] = (char)(inst->index + 1);
 	if (g_op_tab[inst->index].has_pcode)
 		data[(*pos)++] = encode_opcode_extra(inst);
 	encode_params(inst, data, pos);

@@ -19,8 +19,8 @@
 # include <stdbool.h>
 # include <stdint.h>
 
-# define REG_NUMBER 16
-# define REG_SIZE   32
+# define REGISTER_NUMBER 16
+# define REGISTER_SIZE   32
 
 # define CYCLE_TO_DIE 1536
 # define CYCLE_DELTA  50
@@ -29,7 +29,7 @@
 
 typedef struct	s_process
 {
-	uint8_t			reg[REG_NUMBER][REG_SIZE];
+	uint8_t			reg[REGISTER_NUMBER][REGISTER_SIZE];
 	bool			carry;
 	uint8_t			*pc;
 	const t_program	*owner;

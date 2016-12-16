@@ -105,7 +105,7 @@ static int		is_register(char *line, int size, char *type)
 	return (0);
 }
 
-int				parse_parameter(t_env *env, char *line, char *next,
+char				parse_parameter(t_env *env, char *line, char *next,
 	int no_param)
 {
 	int		size;
@@ -138,6 +138,7 @@ int				parse_parameters(t_env *env, char *data)
 	char	*next;
 	int		i;
 
+	next = NULL;
 	i = -1;
 	while ((spaces = 0) || ++i < g_op_tab[env->current_instruction.index].nb_params)
 	{

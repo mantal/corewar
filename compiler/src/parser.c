@@ -35,8 +35,8 @@ int            parse_line(t_env *env)
     if (!(*env->line) || is_comment_char(*env->line))
 		return (0);
     if (!ft_strncmp(env->line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
-        return (parse_extra(env, env->line, NAME_CMD_STRING, env->header.prog_name));
+        return (parse_extra(env, env->line, NAME_CMD_STRING, env->header.name));
     else if (!ft_strncmp(env->line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)))
-        return (parse_extra(env, env->line, COMMENT_CMD_STRING, env->header.comment));
+        return (parse_extra(env, env->line, COMMENT_CMD_STRING, env->header.description));
     return (parse_instructions(env, env->line));
 }

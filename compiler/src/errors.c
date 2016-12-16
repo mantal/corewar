@@ -57,7 +57,7 @@ char    *error_wrong_param_number(t_env *env)
     return (NULL);
 }
 
-int				error_invalid_parameter_format(t_env *env, char *end, int i)
+char			error_invalid_parameter_format(t_env *env, char *end, int i)
 {
     ft_printf("line %i, colum %i: error: parameter %i for instruction %s has an invalid format!\n",
         env->line_number, end - env->line, i, g_op_tab[env->current_instruction.index].name);

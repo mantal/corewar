@@ -13,8 +13,6 @@
 # define LABEL_LENGTH 32
 # define PARAM_LENGTH (LABEL_LENGTH + 1)
 
-extern t_op		g_op_tab[17];
-
 typedef struct	s_label
 {
 	char		name[LABEL_LENGTH];
@@ -66,7 +64,7 @@ int             error_unexpected_characters(t_env *env, char *end);
 int             error_duplicate_symbol(t_env *env, char *type);
 int             error_label_expected(t_env *env, char *end);
 char    		*error_wrong_param_number(t_env *env);
-int				error_invalid_parameter_format(t_env *env, char *pos, int i);
+char			error_invalid_parameter_format(t_env *env, char *pos, int i);
 int				parse_parameters(t_env *env, char *data);
 t_list	        *list_add(t_list **list, void const *content, size_t content_size);
 int             is_data_correct(t_env *env);

@@ -27,7 +27,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c
+SRC = main.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c write_output.c encoder.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
@@ -41,7 +41,7 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o ../$(NAME) -I./../libft -I./../common/includes -L./../common $(CFLAGS) $(OBJ) -lcommon
+	@$(CC) -o ../$(NAME) -I./../libft -I./../common/includes -L./../common -L./../libft $(CFLAGS) $(OBJ) -lcommon -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
