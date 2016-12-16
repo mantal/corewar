@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+PROJECT=LIBFT
 NAME	= libft.a
 SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 			ft_memchr.c ft_memcmp.c ft_malloc.c								\
@@ -58,14 +59,27 @@ OBJ		= $(SRC:.c=.o)
 CFLAGS	= -Wall -Wextra -Weverything -std=c11 -g3 -O0 \
 		  -Wno-padded -Wno-pointer-arith -Wno-float-equal -Wno-shorten-64-to-32 -Wno-conversion -Wno-incompatible-pointer-types-discards-qualifiers
 
+RED=\033[33;91m
+ORANGE=\033[33;93m
+AQUA=\033[33;36m
+GRAY=\033[33;39m
+GREEN=\033[33;32m
+BAR=.............................
+WORDS = $(words $(SRC))
+DIGITS=$(shell echo $$(($(shell echo $(WORDS) | wc -c) - 1)))
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
+	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 %.o: %.c
+	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
+	@$(eval pd=$(shell echo $$(( ($(compteur) * ($(shell echo $(BAR) | wc -c)  - $(DIGITS))/ $(WORDS))))))
+	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(AQUA)$(BAR)$(GRAY)]" $(compteur)
+	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(GREEN)%.*s>" $(compteur) $(pd) $(subst  .,=,$(BAR))
 	@$(CC) -o $@ -c $? $(CFLAGS)
 
 .PHONY: clean fclean re
