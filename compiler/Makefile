@@ -41,14 +41,14 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o ../$(NAME) -I./../libft/includes -I./../common/includes -L./../common $(CFLAGS) $(OBJ)
+	@$(CC) -o ../$(NAME) -I./../libft -I./../common/includes -L./../common $(CFLAGS) $(OBJ)
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
 	@$(eval pd=$(shell echo $$(( ($(compteur) * ($(shell echo $(BAR) | wc -c)  - $(DIGITS))/ $(WORDS))))))
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(AQUA)$(BAR)$(GRAY)]" $(compteur)
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(GREEN)%.*s>" $(compteur) $(pd) $(subst  .,=,$(BAR))
-	@$(CC) -I $(LIB)/includes -I ../common/includes -o $@ -c $? $(CFLAGS)
+	@$(CC) -I $(LIB) -I ../common/includes -o $@ -c $? $(CFLAGS)
 
 clean:
 	@(cd $(LIB) && $(MAKE) $@);

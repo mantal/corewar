@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   endianess.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:52:42 by dlancar          ###   ########.fr       */
+/*   Created: 2016/12/16 15:48:17 by dlancar           #+#    #+#             */
+/*   Updated: 2016/12/16 15:50:25 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vm.h"
-#include "load.h"
+#include "ftendianess.h"
+#include <stdint.h>
 
-int main(int argc, char **argv)
+void		swapInt32(uint32_t *i)
 {
-	t_vm		*vm;
-	t_program	*p1 = NULL;
-
-	p1 = load_program(argc > 1 ? argv[1] : "./test.cor");
-	vm = vm_new();
-	vm_new_process(vm, p1, 0, vm->memory);
-	vm_exec(vm, array_get(vm->process, 0), 0);
-	return (0);
+	*i = (((*i >> 24) & 0xff)
+				| ((*i << 8) & 0xff0000)
+				| ((*i >> 8) & 0xff00)
+				| ((*i << 24) & 0xff000000));
 }

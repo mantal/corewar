@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ftendianess.h                                      :+:      :+:    :+:   */
+/*   program.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/18 16:43:40 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:50:04 by dlancar          ###   ########.fr       */
+/*   Created: 2016/12/12 14:31:28 by dlancar           #+#    #+#             */
+/*   Updated: 2016/12/13 16:24:34 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTENDIANESS_H
-# define FTENDIANESS_H
+#ifndef PROGRAM_H
+# define PROGRAM_H
 
-# include "libft.h"
 # include <stdint.h>
-# include <stddef.h>
 
-# ifdef __APPLE__
-#  include <libkern/OSByteOrder.h>
-#  define SWAP_16(x) (OSSwapConstInt16(x))
-#  define SWAP_32(x) (OSSwapConstInt32(x))
-#  define SWAP_64(x) (OSSwapConstInt64(x))
-# elif __WIN32__
-#  define SWAP_16(x) (TODO)
-# elif __linux__ || __unix__
-# endif
+# define PROG_NAME_LEN 128
+# define PROG_DESC_LEN 2048
 
-void	swapInt32(uint32_t *i);
+typedef struct	s_header
+{
+	unsigned int	magic;
+	char			name[PROG_NAME_LEN + 1];
+	unsigned int	size;
+	char			description[PROG_DESC_LEN + 1];
+} 				t_header;
+
+typedef struct	s_program
+{
+	t_header		header;
+	uint8_t			*program;
+}				t_program;
 
 #endif
