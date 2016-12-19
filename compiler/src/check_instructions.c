@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_instructions.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/19 10:25:00 by tguillem          #+#    #+#             */
+/*   Updated: 2016/12/19 10:28:48 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "assembler.h"
 
 static int		get_label_offset(t_inst *instr, t_list *labels,
@@ -10,7 +22,8 @@ static int		get_label_offset(t_inst *instr, t_list *labels,
 	{
 		if (!ft_strcmp(label_name, ((t_label*)tmp->content)->name))
 		{
-			instr->params[i].integer_value = ((t_label*)tmp->content)->offset - instr->offset;
+			instr->params[i].integer_value = ((t_label*)tmp->content)->offset -
+				instr->offset;
 			return (0);
 		}
 		tmp = tmp->next;
@@ -65,19 +78,19 @@ static int		check_parameter(t_inst *instr, t_list *labels)
 	return (0);
 }
 
-int             check_instructions(t_list *list, t_list *labels)
+int				check_instructions(t_list *list, t_list *labels)
 {
-    int    error;
-    t_list *tmp;
+	int		error;
+	t_list	*tmp;
 
-    tmp = list;
-    error = 0;
-    if (!tmp)
-        return (ft_error_retint("error: no instruction found\n", 1));
+	tmp = list;
+	error = 0;
+	if (!tmp)
+		return (ft_error_retint("error: no instruction found\n", 1));
 	while (tmp)
 	{
-	    error = check_parameter(tmp->content, labels);
+		error = check_parameter(tmp->content, labels);
 		tmp = tmp->next;
 	}
-    return (error);
+	return (error);
 }

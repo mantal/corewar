@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   encoder.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/19 10:25:23 by tguillem          #+#    #+#             */
+/*   Updated: 2016/12/19 10:29:27 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "assembler.h"
 
 static void		encode_parameter(t_param *param, char *data, int *pos)
@@ -29,7 +41,7 @@ static void		encode_params(t_inst *inst, char *data, int *pos)
 	}
 }
 
-static char	    encode_opcode_extra(t_inst *inst)
+static char		encode_opcode_extra(t_inst *inst)
 {
 	char	res;
 	char	param_code;
@@ -54,7 +66,7 @@ static char	    encode_opcode_extra(t_inst *inst)
 	return (res);
 }
 
-void	    	encode_inst(t_inst *inst, char *data, int *pos)
+void			encode_inst(t_inst *inst, char *data, int *pos)
 {
 	data[(*pos)++] = (char)(inst->index + 1);
 	if (g_op_tab[inst->index].has_pcode)

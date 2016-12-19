@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   write_output.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/19 10:26:46 by tguillem          #+#    #+#             */
+/*   Updated: 2016/12/19 10:49:29 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "assembler.h"
 
 static char		*get_output_name(char *path, int path_len)
@@ -27,7 +39,7 @@ static void		write_header(t_env *env, int fd)
 	env->header.size = real_size;
 }
 
-static void     write_instructions(t_env *env, int fd)
+static void		write_instructions(t_env *env, int fd)
 {
 	char	data[env->header.size + 3];
 	t_list	*inst;
@@ -44,20 +56,20 @@ static void     write_instructions(t_env *env, int fd)
 	write(fd, data, env->header.size);
 }
 
-int	    		write_output(t_env *env, char *fname)
+int				write_output(t_env *env, char *fname)
 {
-    char    *output;
-    int		fd;
+	char	*output;
+	int		fd;
 
 	if (!(output = get_output_name(fname, ft_strlen(fname))))
 		return (0);
-    if ((fd = open(output, O_CREAT | O_WRONLY, 0644)) < 0)
-    {
-        perror("asm");
+	if ((fd = open(output, O_CREAT | O_WRONLY, 0644)) < 0)
+	{
+		perror("asm");
 		return (0);
-    }
-    write_header(env, fd);
-    write_instructions(env, fd);
-    (void)env;
-    return (1);
+	}
+	write_header(env, fd);
+	write_instructions(env, fd);
+	(void)env;
+	return (1);
 }

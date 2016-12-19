@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   instructions_parser.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/19 10:25:49 by tguillem          #+#    #+#             */
+/*   Updated: 2016/12/19 10:39:29 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "assembler.h"
 
 static int		compute_offset_of_instruction(t_env *env)
@@ -27,7 +39,7 @@ static int		get_index_of_instruction_in_opcode(char *data)
 	{
 		len = ft_strlen(g_op_tab[i].name);
 		if (!ft_strncmp(data, g_op_tab[i].name, len) &&
-			is_whitespace(data[len]))
+				is_whitespace(data[len]))
 			return (i);
 		i++;
 	}
@@ -58,31 +70,30 @@ static int		parse_label(t_env *env, char *data)
 	return (label_end - data + 1);
 }
 
-int         parse_instructions(t_env *env, char *data)
+int				parse_instructions(t_env *env, char *data)
 {
 	int		label_offset;
 
 	label_offset = 0;
-
-    // Try to find index
-    if ((env->current_instruction.index = get_index_of_instruction_in_opcode(data)) < 0)
-    {
-        // Not found? parse as label! If negative, it's impossible!
-        if ((label_offset = parse_label(env, data)) < 0)
-            return (error_label_expected(env, data));
-        data += label_offset;
+	if ((env->current_instruction.index =
+				get_index_of_instruction_in_opcode(data)) < 0)
+	{
+		if ((label_offset = parse_label(env, data)) < 0)
+			return (error_label_expected(env, data));
+		data += label_offset;
 		if (is_end_of_line(data))
 			return (0);
-        data += count_whitespace_offset(data);
-        if ((env->current_instruction.index = get_index_of_instruction_in_opcode(data)) < 0)
-            return (error_label_expected(env, data));
-    }
-	if (parse_parameters(env, data + ft_strlen(g_op_tab[env->current_instruction.index].name)) < 0)
+		data += count_whitespace_offset(data);
+		if ((env->current_instruction.index =
+					get_index_of_instruction_in_opcode(data)) < 0)
+			return (error_label_expected(env, data));
+	}
+	if (parse_parameters(env, data +
+				ft_strlen(g_op_tab[env->current_instruction.index].name)) < 0)
 		return (1);
-    // TODO: Read parameters, recompute offset and push current_instruction to instructions
 	env->current_instruction.offset = env->current_offset;
 	env->current_instruction.line_number = env->line_number;
 	list_add(&(env->instructions), &(env->current_instruction), sizeof(t_inst));
 	env->current_offset += compute_offset_of_instruction(env);
-    return (0);
+	return (0);
 }

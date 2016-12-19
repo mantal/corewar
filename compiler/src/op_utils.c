@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   op_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/19 10:26:01 by tguillem          #+#    #+#             */
+/*   Updated: 2016/12/19 10:41:26 by tguillem         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "assembler.h"
 
 bool	is_comment_char(char c)
 {
-	return COMMENT_CHAR == c;
+	return (COMMENT_CHAR == c);
 }
 
 bool	is_whitespace(char c)
