@@ -14,7 +14,17 @@
 # define PROGRAM_H
 
 # include <stdint.h>
-# include "op.h"
+
+# define PROG_NAME_LEN 128
+# define PROG_DESC_LEN 2048
+
+typedef struct	s_header
+{
+	unsigned int	magic;
+	char			name[PROG_NAME_LEN + 1];
+	unsigned int	size;
+	char			description[PROG_DESC_LEN + 1];
+} 				t_header;
 
 typedef struct	s_program
 {
