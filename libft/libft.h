@@ -104,5 +104,6 @@ void					ft_strdel(char **as);
 int						is_le(void);
 int						is_be(void);
 short					swap_short(short lt);
+unsigned short			swap_ushort(unsigned short lt);
 unsigned int			swap_uint(unsigned int lt);
 #endif

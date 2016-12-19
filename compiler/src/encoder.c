@@ -14,14 +14,14 @@
 
 static void		encode_parameter(t_param *param, char *data, int *pos)
 {
-	int		tmp;
+	unsigned int		tmp;
 
 	if (param->required_bytes == 1)
 		data[*pos] = (char)param->integer_value;
 	else
 	{
 		if (param->required_bytes == 2)
-			tmp = swap_short((short)param->integer_value);
+			tmp = swap_ushort((short)param->integer_value);
 		else
 			tmp = swap_uint(param->integer_value);
 		ft_memcpy(data + *pos, &tmp, param->required_bytes);
