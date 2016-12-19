@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2016/12/09 16:56:00 by bel-baz          ###   ########.fr        #
+#    Updated: 2016/12/19 17:00:40 by bel-baz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,10 @@ LIB = libft
 
 all: compiler corewar
 
-common:
+common/libcommon.a:
 	@(cd common && $(MAKE) -s)
 
-compiler: common
+asm: common
 	@(cd compiler && $(MAKE) -s)
 
 corewar: common
@@ -37,7 +37,7 @@ fclean: clean
 	@(cd common && $(MAKE) $@);
 	@(cd vm && $(MAKE) $@);
 
-.PHONY: clean fclean re all common compiler corewar
+.PHONY: clean fclean re all
 
 re: fclean all
 
