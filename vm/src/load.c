@@ -22,11 +22,11 @@ static int	load_header(t_header *header, int fd)
 {
 	ft_bzero(header, sizeof(t_header));
 	read(fd, &header->magic, sizeof(header->magic));//TODO CHECK RETOUR READ
-	swapInt32(&header->magic);
+	swap_uint32(&header->magic);
 	read(fd, &header->name, sizeof(header->name) - 1);
 	read(fd, &header->size, 4);
 	read(fd, &header->size, sizeof(header->size));
-	swapInt32(&header->size);
+	swap_uint32(&header->size);
 	read(fd, &header->description, sizeof(header->description) - 1);
 	uint32_t blbl; read(fd, &blbl, sizeof(blbl));
 	return (fd);

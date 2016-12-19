@@ -6,14 +6,14 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 15:48:17 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:50:25 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/19 09:39:09 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftendianess.h"
 #include <stdint.h>
 
-void		swapInt32(uint32_t *i)
+void		swap_uint32(uint32_t *i)
 {
 	*i = (((*i >> 24) & 0xff)
 				| ((*i << 8) & 0xff0000)

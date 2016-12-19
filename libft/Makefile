@@ -6,7 +6,7 @@
 #    By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+         #
 #                                                +#+#+#+#+#+   +#+             #
 #    Created: 2013/11/29 09:40:24 by dlancar           #+#    #+#              #
-#    Updated: 2016/12/02 18:15:05 by dlancar          ###   ########.fr        #
+#    Updated: 2016/12/19 09:39:39 by tguillem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,6 @@ PROJECT=LIBFT
 NAME	= libft.a
 LIST = ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c \
 	   ft_lstsize.c ft_lstmap.c ft_lstget.c
-GNL =  get_next_line.c resource_manager.c
 SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 			ft_memchr.c ft_memcmp.c ft_malloc.c								\
 																			\
@@ -60,8 +59,6 @@ SRC		= ft_bzero.c ft_memset.c ft_memcpy.c ft_memccpy.c ft_memmove.c 		\
 																			\
 			ft_strdel.c	ft_strnew.c endian.c								\
 																			\
-			$(addprefix get_next_line/, $(GNL)) 							\
-			                                                                \
 			endianess.c                                                     \
 			$(addprefix list/, $(LIST))
 

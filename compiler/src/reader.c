@@ -6,7 +6,7 @@ static int     read_lines(int fd, t_env *env)
     int     error;
 
     error = 0;
-	while ((ret = get_next_line(fd, &env->line)) > 0)
+	while ((ret = ft_get_next(fd, &env->line, '\n')) > 0)
 	{
         if (parse_line(env))
             error = 1;

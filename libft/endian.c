@@ -6,13 +6,13 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/18 18:32:10 by tguillem          #+#    #+#             */
-/*   Updated: 2016/07/18 18:35:39 by tguillem         ###   ########.fr       */
+/*   Updated: 2016/12/19 09:37:12 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		    	is_le(void)
+int				is_le(void)
 {
 	unsigned int		x;
 
@@ -20,17 +20,17 @@ int		    	is_le(void)
 	return ((int)(((char *)&x)[0]));
 }
 
-int	    		is_be(void)
+int				is_be(void)
 {
 	return (!is_le());
 }
 
-short		    swap_short(short lt)
+short			swap_short(short lt)
 {
 	return ((lt << 8) | (lt >> 8));
 }
 
-unsigned int 	swap_uint(unsigned int lt)
+unsigned int	swap_uint(unsigned int lt)
 {
 	return (swap_short(lt & 0xffff) << 16) | (swap_short(lt >> 16));
 }

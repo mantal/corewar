@@ -31,6 +31,5 @@ int     main(int ac, char **av)
     }
     else
         ft_printf("Usage: %s source.s\n", *av);
-    resource_manager_destroy();
     return (0);
 }

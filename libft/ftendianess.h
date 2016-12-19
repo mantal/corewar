@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 16:43:40 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:50:04 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/19 09:38:17 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@
 # elif __linux__ || __unix__
 # endif
 
-void	swapInt32(uint32_t *i);
+void	swap_uint32(uint32_t *i);
 
 #endif
