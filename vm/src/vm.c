@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/19 16:54:30 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/20 15:55:02 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 #include "program.h"
 #include <fterror.h>
 #include <stdint.h>
+
+//thread unsafe
+static uint32_t	*param_get_dir(void)
+{
+	static uint32_t	inds[4] = { 0 };
+	static int		i = -1;
+
+	i = i + 1 == 4 ? 0 : i + 1;
+	return (&inds[i]);
+}
 
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
 {
@@ -27,26 +37,26 @@ static void	vm_read(t_process *process, void *p, size_t size)
 	process->pc += size;
 }
 
-static uint32_t	vm_get_param(t_process *process, uint32_t ptype,
-				uint8_t pcode)//pcode => int8?
+static uint32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
 {
-	uint32_t	param;
-	int32_t		temp;
+	uint32_t	*param;
+	uint32_t	temp;
 
 	param = 0;
 	if (ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE))
 	{
-		vm_read(process, &param, 1);
-		param = (uint32_t)process->reg[param];
+		vm_read(process, &temp, 1);
+		param = &process->reg[temp];
 	}
 	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
 	{
-		vm_read(process, &param, 2);
+		vm_read(process, &temp, 2);
+		param = param_get_dir();
 	}
 	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
 	{
 		vm_read(process, &temp, 4);
-		param = process->pc[temp % MEM_SIZE];
+		param = (uint32_t *)&process->pc[temp % MEM_SIZE];
 	}
 	else
 		__builtin_trap();//ft_error_msg("Invalid parameters\n");//todo
@@ -54,7 +64,7 @@ static uint32_t	vm_get_param(t_process *process, uint32_t ptype,
 }
 
 void		vm_decode_params(t_process *process, t_op *op,
-				uint32_t *params)
+				uint32_t **params)
 {
 	uint8_t	pcode;
 	int		i;
@@ -74,7 +84,7 @@ void		vm_exec(t_vm *vm, t_process *process, uint8_t pid)
 {
 	uint8_t		op_code;
 	t_op		*op;
-	uint32_t	params[3];//TODO #define the max params
+	uint32_t	*params[3];
 
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
@@ -93,7 +103,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
 
 	process.carry = false;
 	process.owner = prog;
-	process.reg[0][1] = program_id;
+	process.reg[0] = program_id;
 	process.pc = pc;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);

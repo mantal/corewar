@@ -29,7 +29,7 @@
 
 typedef struct	s_process
 {
-	uint8_t			reg[REG_NUMBER][REG_SIZE];
+	uint32_t		reg[REG_NUMBER];//TODO? REG_SIZE EST HARDCODE PARTOUT
 	bool			carry;
 	uint8_t			*pc;
 	unsigned int	pid;
