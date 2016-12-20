@@ -32,6 +32,7 @@ typedef struct	s_process
 	uint8_t			reg[REG_NUMBER][REG_SIZE];
 	bool			carry;
 	uint8_t			*pc;
+	unsigned int	pid;
 	const t_program	*owner;
 }				t_process;
 

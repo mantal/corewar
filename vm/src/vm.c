@@ -95,6 +95,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
 	process.owner = prog;
 	process.reg[0][1] = program_id;
 	process.pc = pc;
+	process.pid = vm->process.size;
 	array_add(&vm->process, &process);
 	ft_memcpy(vm->memory, prog->program, prog->header.size);
 }
