@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/20 15:55:02 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/20 16:50:29 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,6 @@
 #include "program.h"
 #include <fterror.h>
 #include <stdint.h>
-
-//thread unsafe
-static uint32_t	*param_get_dir(void)
-{
-	static uint32_t	inds[4] = { 0 };
-	static int		i = -1;
-
-	i = i + 1 == 4 ? 0 : i + 1;
-	return (&inds[i]);
-}
 
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
 {
@@ -51,7 +41,7 @@ static uint32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
 	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
 	{
 		vm_read(process, &temp, 2);
-		param = param_get_dir();
+		param = (uint32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
 	}
 	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
 	{
@@ -94,6 +84,7 @@ void		vm_exec(t_vm *vm, t_process *process, uint8_t pid)
 	}
 	op = &g_op_tab[op_code - 1];
 	vm_decode_params(process, op, params);
+	op->handler(vm, process, params);
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
