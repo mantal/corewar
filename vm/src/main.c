@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:52:42 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/20 15:55:20 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int main(int argc, char **argv)
 	p1 = load_program(argc > 1 ? argv[1] : "./test.cor");
 	vm = vm_new();
 	vm_new_process(vm, p1, 0, vm->memory);
-	vm_exec(vm, array_get(vm->process, 0), 0);
+	vm_exec(vm, array_get(&vm->process, 0), 0);
 	return (0);
 }

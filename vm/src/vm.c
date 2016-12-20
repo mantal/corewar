@@ -95,7 +95,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
 	process.owner = prog;
 	process.reg[0][1] = program_id;
 	process.pc = pc;
-	array_add(vm->process, &process);
+	array_add(&vm->process, &process);
 	ft_memcpy(vm->memory, prog->program, prog->header.size);
 }
 
@@ -105,7 +105,7 @@ t_vm		*vm_new(void)
 
 	vm = ft_malloc(sizeof(t_vm));
 	ft_bzero(vm->memory, sizeof(vm->memory));
-	vm->process = array_new(sizeof(t_process), 0);
-	vm->programs = array_new(sizeof(t_program), 0);
+	array_init(&vm->programs, sizeof(t_program), 0);
+	array_init(&vm->process, sizeof(t_process), 0);
 	return (vm);
 }

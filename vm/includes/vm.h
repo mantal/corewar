@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:52:21 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/20 15:53:26 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct	s_process
 
 typedef struct	s_vm
 {
-	t_array		*programs;
-	t_array		*process;
+	t_array		programs;
+	t_array		process;
 	uint8_t		memory[MEM_SIZE];
 }				t_vm;
 
