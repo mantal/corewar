@@ -13,6 +13,6 @@
 #ifndef LOAD_H
 # define LOAD_H
 
-t_program	*load_program(const char *path);
+t_program	*load_program(const char *path, int id);
 
 #endif

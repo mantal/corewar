@@ -87,14 +87,13 @@ void		vm_exec(t_vm *vm, t_process *process, uint8_t pid)
 	op->handler(vm, process, params);
 }
 
-void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
-				uint8_t *pc)
+void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
 {
 	t_process	process;
 
 	process.carry = false;
 	process.owner = prog;
-	process.reg[0] = program_id;
+	process.reg[0] = prog->id;
 	process.pc = pc;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);

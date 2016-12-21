@@ -15,15 +15,15 @@ PROJECT= COREWAR
 NAME=corewar
 LIB = libft
 
-all: compiler corewar
+all: compiler vm
 
-common/libcommon.a:
+common:
 	@(cd common && $(MAKE) -s)
 
-asm: common
+compiler: common
 	@(cd compiler && $(MAKE) -s)
 
-corewar: common
+vm: common
 	@(cd vm && $(MAKE) -s)
 
 clean:
@@ -37,7 +37,7 @@ fclean: clean
 	@(cd common && $(MAKE) $@);
 	@(cd vm && $(MAKE) $@);
 
-.PHONY: clean fclean re all
+.PHONY: clean fclean re all common vm compiler
 
 re: fclean all
 

@@ -12,7 +12,7 @@
 
 UNAME=$(shell uname)
 PROJECT=COMPILER
-NAME=asm
+NAME=../asm
 LIB = ../common
 
 RED=\033[33;91m
@@ -41,7 +41,7 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o ../$(NAME) -I./../libft -I./../common/includes -L./../common -L./../libft $(CFLAGS) $(OBJ) -lcommon -lft
+	@$(CC) -o $(NAME) -I./../libft -I./../common/includes -L./../common -L./../libft $(CFLAGS) $(OBJ) -lcommon -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
@@ -59,10 +59,10 @@ $(OUTDIR):
 
 fclean: clean
 	@(cd $(LIB) && $(MAKE) $@);
-	@rm -f ../$(NAME)
+	@rm -f $(NAME)
 	@rm -rf $(OUTDIR) $(OUTDIR)
 
-.PHONY: clean fclean re all $(NAME) suicide
+.PHONY: clean fclean re all suicide
 
 re: fclean all
 
