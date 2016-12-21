@@ -70,7 +70,7 @@ char	is_valid_number(char *nbr)
 	return (true);
 }
 
-static int getfree(t_array *champions)
+static int getfree(t_array champions)
 {
 	int		rtn;
 	char	found;
@@ -82,9 +82,9 @@ static int getfree(t_array *champions)
 	{
 		i = 0;
 		found = true;
-		while (i < champions->size)
+		while (i < champions.size)
 		{
-			if (((t_program*)array_get(champions, i))->id == rtn && (found = false))
+			if (((t_program*)array_get(&champions, i))->id == rtn && (found = false))
 				break ;
 			i++;
 		}
@@ -124,7 +124,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 		{
 			ft_putstr(argv[i]);
 			ft_putstr("\n");
-			array_add(vm->programs, load_program(argv[i], input_id
+			array_add(&vm->programs, load_program(argv[i], input_id
 				? getfree(vm->programs) : id));
 			input_id = false;
 		}

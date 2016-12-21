@@ -102,7 +102,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
 
 	process.carry = false;
 	process.owner = prog;
-	process.reg[0] = program_id;
+	process.reg[0] = prog->id;
 	process.pc = pc;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);

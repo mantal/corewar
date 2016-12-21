@@ -19,14 +19,14 @@ int main(int argc, char **argv)
 	int i;
 
 	vm = vm_new();
-	vm->programs = array_new(sizeof(t_program), 0);
+	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc - 1, argv + 1, vm);
-	i = vm->programs->size - 1;
+	i = vm->programs.size - 1;
 	while (i >= 0)
 	{
-		vm_new_process(vm, array_get(vm->programs, i), vm->memory);
+		vm_new_process(vm, array_get(&vm->programs, i), vm->memory);
 		i--;
 	}
-	vm_exec(vm, array_get(vm->process, 0), 0);
+	vm_exec(vm, array_get(&vm->process, 0), 0);
 	return (0);
 }
