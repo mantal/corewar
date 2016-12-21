@@ -14,6 +14,7 @@
 #include "op.h"
 #include "program.h"
 #include <fterror.h>
+#include <ftendianess.h>
 #include <stdint.h>
 
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
@@ -21,40 +22,49 @@ static uint8_t	get_param_pcode(uint8_t pcode, int n)
 	return (((pcode & (0b11000000 >> (n * 2)))) >> (6 - n * 2));
 }
 
-static void	vm_read(t_process *process, void *p, size_t size)
+static void	swap_uint16(uint16_t *n)
 {
+	*n = (uint16_t)((*n >> 8) | (*n << 8));
+}
+
+static void		vm_read(t_process *process, void *p, size_t size)
+{//TODO handle signed
 	ft_memcpy(p, process->pc, size);
+	if (size == 2)
+		swap_uint16(p);
+	else if (size == 4)
+		swap_uint32(p);
 	process->pc += size;
 }
 
-static uint32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
+static int32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
 {
-	uint32_t	*param;
-	uint32_t	temp;
+	int32_t	*param;
+	int32_t	temp;
 
 	param = 0;
+	temp = 0;
 	if (ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE))
 	{
 		vm_read(process, &temp, 1);
-		param = &process->reg[temp];
+		param = (int32_t *)&process->reg[temp];
 	}
 	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
 	{
 		vm_read(process, &temp, 2);
-		param = (uint32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
+		param = (int32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
 	}
 	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
 	{
-		vm_read(process, &temp, 4);
-		param = (uint32_t *)&process->pc[temp % MEM_SIZE];
+		vm_read(process, &temp, 2);
+		param = (int32_t *)(process->pc + (temp % IDX_MOD));
 	}
 	else
 		__builtin_trap();//ft_error_msg("Invalid parameters\n");//todo
 	return (param);
 }
 
-void		vm_decode_params(t_process *process, t_op *op,
-				uint32_t **params)
+void		vm_decode_params(t_process *process, t_op *op, int32_t **params)
 {
 	uint8_t	pcode;
 	int		i;
