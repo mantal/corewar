@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2016/12/20 15:41:10 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/20 17:42:02 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 typedef struct	s_vm t_vm;
 typedef struct	s_process t_process;
 
-typedef void (*t_op_handler)(t_vm *vm, t_process *process, uint32_t *args[3]);
+typedef void (*t_op_handler)(t_vm *vm, t_process *process, int32_t *args[3]);
 
 typedef struct		s_op
 {
@@ -68,21 +68,21 @@ typedef struct		s_op
 
 extern t_op	g_op_tab[17];
 
-void	op_live(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_ld(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_st(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_add(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_sub(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_and(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_or(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_xor(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_zjmp(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_ldi(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_sti(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_fork(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_lld(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_lldi(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_lfork(t_vm *vm, t_process *process, uint32_t *args[3]);
-void	op_aff(t_vm *vm, t_process *process, uint32_t *args[3]);
+void	op_live(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_ld(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_st(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_add(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_sub(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_and(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_or(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_xor(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_zjmp(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_ldi(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_sti(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_fork(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_lld(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_lldi(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_lfork(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_aff(t_vm *vm, t_process *process, int32_t *args[3]);
 
 #endif

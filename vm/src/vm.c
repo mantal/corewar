@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/20 16:50:29 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/21 18:11:00 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,17 @@ void		vm_decode_params(t_process *process, t_op *op,
 	}
 }
 
-void		vm_exec(t_vm *vm, t_process *process, uint8_t pid)
+void		vm_exec(t_vm *vm, t_process *process)
 {
-	uint8_t		op_code;
-	t_op		*op;
-	uint32_t	*params[3];
+	uint8_t	op_code;
+	t_op	*op;
+	int32_t	*params[3];
 
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
 		ft_error_msg("Process %d created by %s tried to execute an illegal instruction %d\n",
-						pid, process->owner->header.name, op_code);
+						process->pid, process->owner->header.name, op_code);
 	}
 	op = &g_op_tab[op_code - 1];
 	vm_decode_params(process, op, params);
