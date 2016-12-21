@@ -57,6 +57,7 @@ t_program	*load_program(const char *path, int id)
 
 	prog = ft_malloc(sizeof(t_program));
 	prog->id = id;
+	prog->alive = false;
 	fd = ft_open(path, O_RDONLY);
 	load_header(&prog->header, fd);
 	prog->program = ft_malloc(prog->header.size * sizeof(uint8_t));

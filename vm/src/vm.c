@@ -114,6 +114,9 @@ t_vm		*vm_new(void)
 	t_vm	*vm;
 
 	vm = ft_malloc(sizeof(t_vm));
+	vm->lives = 0;
+	vm->current_cycle = 0;
+	vm->cycles_to_die = CYCLE_TO_DIE;
 	ft_bzero(vm->memory, sizeof(vm->memory));
 	array_init(&vm->programs, sizeof(t_program), 0);
 	array_init(&vm->process, sizeof(t_process), 0);
