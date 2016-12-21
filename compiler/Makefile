@@ -59,7 +59,7 @@ $(OUTDIR):
 
 fclean: clean
 	@(cd $(LIB) && $(MAKE) $@);
-	@rm -f ../$(NAME)
+	@rm -f $(NAME)
 	@rm -rf $(OUTDIR) $(OUTDIR)
 
 .PHONY: clean fclean re all suicide

@@ -86,14 +86,13 @@ void		vm_exec(t_vm *vm, t_process *process, uint8_t pid)
 	vm_decode_params(process, op, params);
 }
 
-void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t program_id,
-				uint8_t *pc)
+void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
 {
 	t_process	process;
 
 	process.carry = false;
 	process.owner = prog;
-	process.reg[0][1] = program_id;
+	process.reg[0][1] = prog->id;
 	process.pc = pc;
 	array_add(vm->process, &process);
 	ft_memcpy(vm->memory, prog->program, prog->header.size);
@@ -107,5 +106,6 @@ t_vm		*vm_new(void)
 	ft_bzero(vm->memory, sizeof(vm->memory));
 	vm->process = array_new(sizeof(t_process), 0);
 	vm->programs = array_new(sizeof(t_program), 0);
+	vm->max_cycles = 0;
 	return (vm);
 }

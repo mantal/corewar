@@ -50,12 +50,13 @@ void		display_prog(t_program *prog)
 	}
 }
 
-t_program	*load_program(const char *path)
+t_program	*load_program(const char *path, int id)
 {
 	t_program	*prog;
 	int			fd;
 
 	prog = ft_malloc(sizeof(t_program));
+	prog->id = id;
 	fd = ft_open(path, O_RDONLY);
 	load_header(&prog->header, fd);
 	prog->program = ft_malloc(prog->header.size * sizeof(uint8_t));

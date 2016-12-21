@@ -63,5 +63,6 @@ int			ft_perror(void)
 	if (errno > 106)
 		errno = 0;
 	ft_printf_fd(STDERR, "Error : %s.\n", sys_errlist[errno]);
+	__builtin_trap();
 	return (0);
 }

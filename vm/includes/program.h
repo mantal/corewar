@@ -30,6 +30,7 @@ typedef struct	s_program
 {
 	t_header		header;
 	uint8_t			*program;
+	int				id;
 }				t_program;
 
 #endif

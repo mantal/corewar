@@ -93,6 +93,8 @@ t_list					*ft_lstget(t_list *lst, void *data, size_t data_size);
 size_t					ft_lstsize(t_list *lst);
 void					*ft_memalloc(size_t size);
 void					ft_memdel(void **ap);
+t_list					*ft_lstpushback(t_list *first, void *content,
+	size_t size);
 int						ft_parse_args(int ac, char **av, void *data,
 		int (*compute_options)(void*, char*));
 int						ft_usage(char *prg_name, char *usage,
