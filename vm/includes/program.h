@@ -31,6 +31,7 @@ typedef struct	s_program
 	t_header		header;
 	uint8_t			*program;
 	int				id;
+	char			alive;
 }				t_program;
 
 #endif

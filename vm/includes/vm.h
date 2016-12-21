@@ -41,7 +41,10 @@ typedef struct	s_vm
 	t_array		programs;
 	t_array		process;
 	uint8_t		memory[MEM_SIZE];
+	int			current_cycle;
 	int			max_cycles;
+	int			lives;
+	int			cycles_to_die;
 }				t_vm;
 
 t_vm		*vm_new(void);
@@ -49,4 +52,5 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc);
 void		vm_exec(t_vm *vm, t_process *process, uint8_t pid);
 void		parse_args(int argc, char **argv, t_vm *vm);
 void		live(t_program *prg, t_vm *vm);
+void		tick_cycles(t_vm *vm);
 #endif
