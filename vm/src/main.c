@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/21 18:16:52 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/22 15:59:19 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ int main(int argc, char **argv)
 		vm_new_process(vm, array_get(&vm->programs, i), vm->memory);
 		i--;
 	}
-	vm_exec(vm, array_get(&vm->process, 0));
+	while (true)
+	{
+		vm_exec(vm, array_get(&vm->process, 0));
+	}
 	return (0);
 }

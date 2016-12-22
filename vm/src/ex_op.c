@@ -6,13 +6,24 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/19 17:28:27 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/20 17:48:36 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/22 16:48:54 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "program.h"
 #include <ftio.h>
+#include <ftendianess.h>
+
+
+//TODO les params doivent etre cast en 8/16/32 quand besoin sinon ils risaue ecrire trop loin
+
+
+void	write_32(const void *src, void *dst)
+{
+	ft_memcpy(dst, src, 2);
+	swap_uint32(dst);
+}
 
 void op_live(t_vm *vm, t_process *process, int32_t *args[3])
 {
@@ -30,10 +41,13 @@ void op_ld(t_vm *vm, t_process *process, int32_t *args[3])
 void op_st(t_vm *vm, t_process *process, int32_t *args[3])
 {
 	(void)vm;
-	info("[%d]: st %d %d\n", process->pid, *args[0], *args[1]);
-	*args[1] = *args[0];
+	info("[%d]: st %d 0x%x\n", process->pid, *args[0], args[1]);
+	write_32(args[0], args[1]);
+	//*args[1] = *args[0];
 	process->carry = *args[1] == 0;
 }
+
+//TODO LE CARRY DOIT ETRE RESET
 
 void op_add(t_vm *vm, t_process *process, int32_t *args[3])
 {

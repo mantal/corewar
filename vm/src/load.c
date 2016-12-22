@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 14:36:38 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:51:04 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/22 15:55:35 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_program	*load_program(const char *path, int id)
 	load_header(&prog->header, fd);
 	prog->program = ft_malloc(prog->header.size * sizeof(uint8_t));
 	read(fd, prog->program, prog->header.size * sizeof(uint8_t));
+	prog->id = 0;//TODO OURTEN FIX THIS
+	prog->alive = true;
 	ft_close(fd);
 	return (prog);
 }

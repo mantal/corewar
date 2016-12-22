@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/18 16:43:40 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/19 09:38:17 by tguillem         ###   ########.fr       */
+/*   Updated: 2016/12/22 15:32:25 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@
 # endif
 
 void	swap_uint32(uint32_t *i);
+void	swap_uint16(uint16_t *i);
 
 #endif

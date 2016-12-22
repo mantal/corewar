@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/21 18:11:00 by dlancar          ###   ########.fr       */
+/*   Updated: 2016/12/22 16:53:52 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
 {
 	return (((pcode & (0b11000000 >> (n * 2)))) >> (6 - n * 2));
-}
-
-static void	swap_uint16(uint16_t *n)
-{
-	*n = (uint16_t)((*n >> 8) | (*n << 8));
 }
 
 static void		vm_read(t_process *process, void *p, size_t size)
@@ -51,7 +46,7 @@ static int32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
 	}
 	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
 	{
-		vm_read(process, &temp, 2);
+		vm_read(process, &temp, 4);
 		param = (int32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
 	}
 	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
@@ -103,6 +98,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
 
 	process.carry = false;
 	process.owner = prog;
+	ft_bzero(&process.reg, sizeof(process.reg));
 	process.reg[0] = prog->id;
 	process.pc = pc;
 	process.pid = vm->process.size;
