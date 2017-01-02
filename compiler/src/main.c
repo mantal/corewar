@@ -26,6 +26,21 @@ t_env	*init_data(void)
 	return (env);
 }
 
+void	destroy_entry(void *ptr, size_t size)
+{
+	(void)size;
+	ft_memdel(&ptr);
+}
+
+void	destroy_data(t_env *env)
+{
+	if (env->instructions)
+		ft_lstdel(&env->instructions, destroy_entry);
+	if (env->labels)
+		ft_lstdel(&env->labels, destroy_entry);
+	ft_memdel((void**)&env);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	*env;
@@ -39,6 +54,7 @@ int		main(int ac, char **av)
 					env->header.name, env->header.description);
 			write_output(env, *(av + 1));
 		}
+		destroy_data(env);
 	}
 	else
 		ft_printf("Usage: %s source.s\n", *av);

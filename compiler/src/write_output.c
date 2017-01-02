@@ -12,19 +12,20 @@
 
 #include "assembler.h"
 
-static char		*get_output_name(char *path, int path_len)
+static char		*get_output_name(char *path)
 {
-	char	new[path_len + 5];
+	char	*new;
 	char	*tmp;
 
-	ft_bzero(new, path_len + 5);
-	ft_strcpy(new, path);
+	new = ft_strdup(path);
+	if (!new)
+		return (NULL);
 	if (!(tmp = ft_strrchr(new, '/')))
 		tmp = new;
 	if ((tmp = ft_strrchr(tmp, '.')))
 		*tmp = '\0';
 	ft_strcat(new, ".cor");
-	return (ft_strdup(new));
+	return (new);
 }
 
 static void		write_header(t_env *env, int fd)
@@ -32,28 +33,30 @@ static void		write_header(t_env *env, int fd)
 	unsigned int	real_size;
 
 	real_size = env->header.size;
-	ft_printf("%x, %x\n", env->header.magic, swap_uint(env->header.magic));
 	env->header.magic = swap_uint(env->header.magic);
 	env->header.size = swap_uint(env->header.size);
 	write(fd, &env->header, sizeof(t_header));
 	env->header.size = real_size;
 }
 
-static void		write_instructions(t_env *env, int fd)
+static int		write_instructions(t_env *env, int fd)
 {
-	char	data[env->header.size + 3];
+	char	*data;
 	t_list	*inst;
 	int		i;
 
+	if (!(data = (char*)ft_memalloc(sizeof(char) * (env->header.size + 3))))
+		return (0);
 	i = 0;
 	inst = env->instructions;
-	ft_bzero(data, env->header.size + 2);
 	while (inst)
 	{
 		encode_inst((t_inst*)inst->content, data, &i);
 		inst = inst->next;
 	}
 	write(fd, data, env->header.size);
+	ft_memdel((void**)&data);
+	return (1);
 }
 
 int				write_output(t_env *env, char *fname)
@@ -61,15 +64,23 @@ int				write_output(t_env *env, char *fname)
 	char	*output;
 	int		fd;
 
-	if (!(output = get_output_name(fname, ft_strlen(fname))))
+	if (!(output = get_output_name(fname)))
+	{
+		ft_printf("Allocation error during write_output!\n");
 		return (0);
+	}
 	if ((fd = open(output, O_CREAT | O_WRONLY, 0644)) < 0)
 	{
 		perror("asm");
+		ft_memdel((void**)&output);
 		return (0);
 	}
+	ft_memdel((void**)&output);
 	write_header(env, fd);
-	write_instructions(env, fd);
-	(void)env;
+	if (!write_instructions(env, fd))
+	{
+		ft_printf("Allocation error during write_output!\n");
+		return (1);
+	}
 	return (1);
 }
