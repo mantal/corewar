@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/18 18:32:10 by tguillem          #+#    #+#             */
-/*   Updated: 2016/12/19 09:37:12 by tguillem         ###   ########.fr       */
+/*   Updated: 2017/01/03 20:00:32 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ short			swap_short(short lt)
 
 unsigned int	swap_uint(unsigned int lt)
 {
-	lt = ((lt << 8) & 0xFF00FF00 ) | ((lt >> 8) & 0xFF00FF);
-    return (lt << 16) | (lt >> 16);
+	lt = ((lt << 8) & 0xFF00FF00) | ((lt >> 8) & 0xFF00FF);
+	return ((lt << 16) | (lt >> 16));
 }
