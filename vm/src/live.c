@@ -24,10 +24,13 @@ void live(t_program *prg, t_vm *vm)
 
 void tick_cycles(t_vm *vm)
 {
-    if (!vm->current_cycle % vm->cycles_to_die)
+    if (!(vm->current_cycle % vm->cycles_to_die))
     {
         // check process live
-        if (vm->lives < NBR_LIVE)
+        if (vm->lives >= NBR_LIVE)
             vm->cycles_to_die -= CYCLE_DELTA;
     }
+    vm->current_cycle++;
+    if (vm->current_cycle >= vm->max_cycles)
+        // kill vm
 }
