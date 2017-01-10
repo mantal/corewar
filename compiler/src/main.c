@@ -50,8 +50,8 @@ int		main(int ac, char **av)
 		env = init_data();
 		if (env && parse_file(env, *(av + 1)) && is_data_correct(env))
 		{
-			ft_printf("compillation done!\nname: %s\ndesc: %s\n",
-					env->header.name, env->header.description);
+			ft_printf("compillation done!\nname: %s\ndesc: %s\nsize: %d\n",
+					env->header.name, env->header.description, env->header.size);
 			write_output(env, *(av + 1));
 		}
 		destroy_data(env);

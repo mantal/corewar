@@ -58,12 +58,12 @@ int					ft_usage(char *prg_name, char *usage, char illegal_char)
 
 char				*ft_error_return(char *str, char *code)
 {
-	ft_putstr_fd(str, 2);
+	ft_printf_fd(2, str);
 	return (code);
 }
 
 int					ft_error_retint(char *str, int code)
 {
-	ft_putstr_fd(str, 2);
+	ft_printf_fd(2, str);
 	return (code);
 }
