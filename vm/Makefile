@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2016/12/09 16:56:00 by bel-baz          ###   ########.fr        #
+#    Updated: 2017/01/10 08:18:55 by tguillem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,14 +41,14 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o $(NAME) -I./../libft -I./../common/includes -L./../common $(CFLAGS) $(OBJ) -lcommon
+	@$(CC) -o $(NAME) -I./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
 	@$(eval pd=$(shell echo $$(( ($(compteur) * ($(shell echo $(BAR) | wc -c)  - $(DIGITS))/ $(WORDS))))))
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(AQUA)$(BAR)$(GRAY)]" $(compteur)
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(GREEN)%.*s>" $(compteur) $(pd) $(subst  .,=,$(BAR))
-	@$(CC) -I ../libft -I ../common/includes -o $@ -c $? $(CFLAGS)
+	@$(CC) -I ../libft -o $@ -c $? $(CFLAGS)
 
 clean:
 	@(cd $(LIB) && $(MAKE) $@);
