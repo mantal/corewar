@@ -17,7 +17,7 @@ LIB = ../libft
 
 CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
-	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
+	-Wno-sign-conversion -pipe -O0 -g3 \
 	-I./includes
 
 SRC = op.c

@@ -14,14 +14,14 @@
 
 int				error_duplicate_symbol(t_env *env, char *type)
 {
-	ft_printf("line %i: error: duplicate symbol \"%s\"\n",
+	ft_printf("line %d: error: duplicate symbol \"%s\"\n",
 			env->line_number, type);
 	return (1);
 }
 
 int				error_label_expected(t_env *env, char *end)
 {
-	ft_printf("line %i, colum %i: error: instruction or label name expected!\n"
+	ft_printf("line %d, colum %d: error: instruction or label name expected!\n"
 			, env->line_number, end - env->line);
 	return (1);
 }

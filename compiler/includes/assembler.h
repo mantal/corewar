@@ -58,7 +58,6 @@ typedef struct	s_env
 	int			line_number;
 }				t_env;
 
-t_env			*init_data(void);
 int				parse_file(t_env *env, char *fname);
 int				parse_line(t_env *env);
 int				parse_instructions(t_env *env, char *data);

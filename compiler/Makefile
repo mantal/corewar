@@ -24,7 +24,7 @@ BAR=.............................
 
 CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
-	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
+	-Wno-sign-conversion -pipe -O0 -g3 \
 	-I./includes
 
 SRC = main.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c write_output.c encoder.c parameters_parser_utils.c errors_2.c errors_3.c

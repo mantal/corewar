@@ -19,7 +19,7 @@ void			check_header(t_env *env)
 	if (!(*env->header.description))
 		ft_printf("Warning: program description not defined!\n");
 	if ((env->header.size = env->current_offset) > CHAMP_MAX_SIZE)
-		ft_printf("Warning: program is %i too long\n",
+		ft_printf("Warning: program is %d too long\n",
 				CHAMP_MAX_SIZE - env->header.size);
 }
 
