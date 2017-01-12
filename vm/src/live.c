@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2016/12/21 17:15:13 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/12 18:00:58 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,9 @@ void tick_cycles(t_vm *vm)
 {
     int i;
 
-    i = 0;
-    while (i < vm->process.size)
-    {
+    i = vm->process.size;
+    while (--i >= 0)
         vm_exec(vm, array_get(vm->process, i));
-        i++;
-    }
     if (vm->current_cycle == vm->next_die)
     {
         i = 0;
@@ -57,5 +54,9 @@ void tick_cycles(t_vm *vm)
     }
     vm->current_cycle++;
     if (vm->current_cycle >= vm->max_cycles)
-        // kill vm
+    {
+        vm_dump(vm);
+        ft_printf("Game over\n");
+        exit(0);
+    }
 }

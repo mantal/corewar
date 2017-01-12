@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/20 17:45:53 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/12 17:52:39 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,5 @@ void		parse_args(int argc, char **argv, t_vm *vm);
 void		live(t_program *prg, t_vm *vm);
 void		tick_cycles(t_vm *vm);
 void		vm_exec(t_vm *vm, t_process *process);
+void		vm_dump(t_vm *vm);
 #endif
