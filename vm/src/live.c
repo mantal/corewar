@@ -24,11 +24,36 @@ void live(t_program *prg, t_vm *vm)
 
 void tick_cycles(t_vm *vm)
 {
-    if (!(vm->current_cycle % vm->cycles_to_die))
+    int i;
+
+    i = 0;
+    while (i < vm->process.size)
     {
-        // check process live
+        vm_exec(vm, array_get(vm->process, i));
+        i++;
+    }
+    if (vm->current_cycle == vm->next_die)
+    {
+        i = 0;
+        while (i < vm->process.size)
+        {
+            if (array_get(vm->process, i).owner->alive)
+            {
+                array_get(vm->process, i).owner->alive = false;
+                vm->lives++;
+            }
+            else
+            {
+                ft_printf("Le processus %d a été tué",
+                    array_get(vm->process, i).pid);
+                array_remove(vm->process, i);
+            }
+            i++;
+        }
         if (vm->lives >= NBR_LIVE)
             vm->cycles_to_die -= CYCLE_DELTA;
+        vm->lives = 0;
+        vm->next_die = vm->current_cycle + vm->cycles_to_die;
     }
     vm->current_cycle++;
     if (vm->current_cycle >= vm->max_cycles)

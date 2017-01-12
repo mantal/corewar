@@ -14,6 +14,7 @@
 # define PROGRAM_H
 
 # include <stdint.h>
+# include <stdbool.h>
 
 # define PROG_NAME_LEN 128
 # define PROG_DESC_LEN 2048
@@ -31,7 +32,7 @@ typedef struct	s_program
 	t_header		header;
 	uint8_t			*program;
 	int				id;
-	char			alive;
+	bool			alive;
 }				t_program;
 
 #endif

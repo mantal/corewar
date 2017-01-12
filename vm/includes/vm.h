@@ -45,6 +45,7 @@ typedef struct	s_vm
 	int			max_cycles;
 	int			lives;
 	int			cycles_to_die;
+	int			next_die;
 }				t_vm;
 
 t_vm		*vm_new(void);
