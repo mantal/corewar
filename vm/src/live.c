@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/17 16:12:34 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/17 17:25:47 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ static void print_alive(t_vm *vm)
     i = 0;
     alive = count_alive(vm);
     if (alive == 0)
+    {
+        ft_printf("No players alive!\n");
         return ;
+    }
     while (i < vm->programs.size)
     {
         if (((t_program*)array_get(&vm->programs, i))->alive)

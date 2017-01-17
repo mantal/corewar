@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 16:28:26 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/17 17:24:48 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void		vm_dump(t_vm *vm)
 	while (i < MEM_SIZE)
 	{
 		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0',vm->memory[i]);
-		if (!(i % 32))
+		if (!((i + 1) % 32))
 			ft_printf("\n");
 		i++;
 	}
