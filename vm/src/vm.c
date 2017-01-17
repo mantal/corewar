@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/12 18:00:03 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/17 16:28:26 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <fterror.h>
 #include <ftendianess.h>
 #include <stdint.h>
+#include <ftio.h>
 
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
 {
@@ -97,7 +98,8 @@ void		vm_exec(t_vm *vm, t_process *process)
 	op->handler(vm, process, params);
 }
 
-void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
+void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
+	size_t start)
 {
 	t_process	process;
 
@@ -107,7 +109,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc)
 	process.pc = pc;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);
-	ft_memcpy(vm->memory, prog->program, prog->header.size);
+	ft_memcpy(vm->memory + start, prog->program, prog->header.size);
 }
 
 t_vm		*vm_new(void)
