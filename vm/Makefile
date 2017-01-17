@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2017/01/10 08:18:55 by tguillem         ###   ########.fr        #
+#    Updated: 2017/01/17 16:06:00 by bel-baz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c load.c vm.c args_parser.c op.c ex_op.c
+SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
