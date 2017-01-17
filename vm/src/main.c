@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 16:28:05 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/17 16:31:51 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ int main(int argc, char **argv)
 		i--;
 	}
 	vm_exec(vm, array_get(&vm->process, 0));
+	while (true)
+		tick_cycles(vm);
 	return (0);
 }

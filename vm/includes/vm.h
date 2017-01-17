@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 16:27:02 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/17 16:30:31 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "op.h"
 # include "program.h"
+# include "live.h"
 # include <libft.h>
 # include <stdbool.h>
 # include <stdint.h>
