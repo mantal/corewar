@@ -32,6 +32,9 @@
 *.dSYM/
 *.su
 
+# VSCODE
+.vscode/
+
 # Project specific files
 asm
 corewar
