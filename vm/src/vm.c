@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/22 16:53:52 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/10 13:18:47 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <fterror.h>
 #include <ftendianess.h>
 #include <stdint.h>
+
+#include <ftio.h>
 
 static uint8_t	get_param_pcode(uint8_t pcode, int n)
 {
@@ -32,7 +34,20 @@ static void		vm_read(t_process *process, void *p, size_t size)
 	process->pc += size;
 }
 
-static int32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
+static int32_t	*holder(int32_t i)
+{
+	static int32_t	v[3] = { 0 };
+	static int	it = -1;
+
+	it = it + 1 > 3 ? 0 : it + 1;
+	v[it] = i;
+	return (&v[it]);
+}
+
+static t_vm *g_vm = NULL;//
+
+static int32_t	*vm_get_param(t_process *process, t_op *op, uint32_t ptype,
+				uint8_t pcode)
 {
 	int32_t	*param;
 	int32_t	temp;
@@ -43,16 +58,23 @@ static int32_t	*vm_get_param(t_process *process, uint32_t ptype, uint8_t pcode)
 	{
 		vm_read(process, &temp, 1);
 		param = (int32_t *)&process->reg[temp];
+		info("from REG %d %d (0x%x)\n", temp, *param, (process->pc - 1) - g_vm->memory);
 	}
 	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
 	{
-		vm_read(process, &temp, 4);
-		param = (int32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
+		vm_read(process, &temp, op->has_idx ? 2 : 4);
+		temp = op->has_idx ? (int16_t)temp : temp;
+		if (op->has_idx)
+			param = holder(temp);
+		else
+			param = (int32_t *)&process->pc[temp % MEM_SIZE];//TODO tous les op ont pas de mod
+		info("DIR %d (0x%x)\n", temp, (process->pc - (op->has_idx ? 2 : 4)) - g_vm->memory);
 	}
 	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
 	{
 		vm_read(process, &temp, 2);
 		param = (int32_t *)(process->pc + (temp % IDX_MOD));
+		info("IND %d (0x%x)\n", temp, (process->pc - 2) - g_vm->memory);
 	}
 	else
 		__builtin_trap();//ft_error_msg("Invalid parameters\n");//todo
@@ -66,11 +88,16 @@ void		vm_decode_params(t_process *process, t_op *op, int32_t **params)
 
 	pcode = 0;
 	if (op->has_pcode)
+	{
 		vm_read(process, &pcode, sizeof(pcode));
+		info("read pcode %d (0x%x)\n", pcode, (process->pc - sizeof(pcode)) - g_vm->memory);
+	}
 	i = 0;
 	while (i < op->nb_params)
 	{
-		params[i] = vm_get_param(process, op->param_types[i], get_param_pcode(pcode, i));
+		info("read param %d ", i);
+		params[i] = vm_get_param(process, op, op->param_types[i],
+						get_param_pcode(pcode, i));
 		i++;
 	}
 }
@@ -81,7 +108,9 @@ void		vm_exec(t_vm *vm, t_process *process)
 	t_op	*op;
 	int32_t	*params[3];
 
+	g_vm = vm;//
 	vm_read(process, &op_code, sizeof(op_code));
+	info("read opcode %d (0x%x)\n", op_code, (process->pc - sizeof(op_code)) - vm->memory);
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
 		ft_error_msg("Process %d created by %s tried to execute an illegal instruction %d\n",

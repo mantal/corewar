@@ -17,7 +17,7 @@ LIB		= ../../libft
 INCL	= $(LIB)
 LBFLAG	= -lft
 CFLAGS  = -std=c11 -Wall -Wextra -Weverything -Wno-unused-parameter\
-		  -Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes
+		  -Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes -Wno-gnu-binary-literal
 debug: CFLAGS += -O0 -g3 -fsanitize=address
 release: CFLAGS += -O3 -march=native
 
