@@ -12,12 +12,14 @@
 
 #include "vm.h"
 #include "load.h"
+#include <ftio.h>
 
 int main(int argc, char **argv)
 {
 	t_vm		*vm;
 	int i;
 
+	//g_ftio_verbose_level = FTIO_DEBUG;
 	vm = vm_new();
 	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc - 1, argv + 1, vm);
@@ -28,6 +30,7 @@ int main(int argc, char **argv)
 			(MEM_SIZE / vm->programs.size) * i);
 		i--;
 	}
+
 	vm_exec(vm, array_get(&vm->process, 0));
 	while (true)
 		tick_cycles(vm);

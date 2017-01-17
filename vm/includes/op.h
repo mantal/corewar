@@ -15,9 +15,9 @@
 
 # include <stdint.h>
 
-//# define IND_SIZE				2
-//# define REG_SIZE				4
-//# define DIR_SIZE				REG_SIZE
+# define IND_DATA_SIZE				2
+# define REG_DATA_SIZE				4
+# define DIR_DATA_SIZE				REG_DATA_SIZE
 
 # define REG_CODE				1
 # define DIR_CODE				2
