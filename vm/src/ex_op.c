@@ -64,9 +64,11 @@ int32_t	*get_indirect(t_process *process, t_op_data *data, int index)
 
 	ptype = process->current_instruction->param_types[index];
 	param = data->params[index];
+	if (process->current_instruction->opcode != 0xA)
+		param = param % IDX_MOD;
 	pcode = data->param_pcodes[index];
 	if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
-		return ((int32_t *)&process->entry_point[(process->position + ((int16_t)param % IDX_MOD) + MEM_SIZE) % MEM_SIZE]);
+		return ((int32_t *)&process->entry_point[(process->position + param + MEM_SIZE) % MEM_SIZE]);
 	else
 		return (NULL);
 }
@@ -208,9 +210,14 @@ void op_fork(t_vm *vm, t_process *process, t_op_data *data)
 
 void op_lld(t_vm *vm, t_process *process, t_op_data *data)
 {
+	int32_t	*output;
+
 	(void)vm;
-	(void)process;
-	(void)data;
+	if (!(output = get_register(process, data, 1)))
+		return ;
+	info("[%d]: lld %d r%d\n", process->pid, data->params[0], data->params[1]);
+	*output = get_value(process, data, 0);
+	process->carry = *output == 0;
 }
 
 void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
