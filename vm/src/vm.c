@@ -18,28 +18,15 @@
 #include <stdint.h>
 #include <ftio.h>
 
-static uint8_t	get_param_size(t_op *op, uint32_t ptype, uint8_t pcode)
+static uint8_t	get_param_size(t_op *op, uint8_t pcode)
 {
-	if (op->has_pcode)
-	{
-		if (pcode == REG_CODE)
-			return (1);
-		else if ((pcode == DIR_CODE && op->has_idx) || (pcode == IND_CODE))
-			return (IND_DATA_SIZE);
-		else if (pcode == DIR_CODE && !op->has_idx)
-			return (DIR_DATA_SIZE);
-		warning("Invalid pcode %x\n", pcode);
-	}
-	else
-	{
-		if (ptype == T_REG)
-			return (1);
-		else if ((ptype == T_DIR && op->has_idx) || (ptype == T_IND))
-			return (IND_DATA_SIZE);
-		else if (ptype == T_DIR && !op->has_idx)
-			return (DIR_DATA_SIZE);
-		warning("Invalid ptype %x\n", ptype);
-	}
+	if (pcode == REG_CODE)
+		return (1);
+	else if ((pcode == DIR_CODE && op->has_idx) || (pcode == IND_CODE))
+		return (IND_DATA_SIZE);
+	else if (pcode == DIR_CODE && !op->has_idx)
+		return (DIR_DATA_SIZE);
+	warning("Invalid pcode %x\n", pcode);
 	return (0);
 }
 
@@ -63,14 +50,14 @@ static void	swap_uint16(uint16_t *n)
 static void		vm_read(t_process *process, void *p, size_t size)
 {
 	//TODO handle signed
-	debug("        Read %d bytes at position 0x%X", size, process->pc);
+	debug("        Read %d bytes at position 0x%X", size, process->entry_point + process->position);
 	if (size == 0)
 	{
 		debug("\n");
 		return ;
 	}
 
-	ft_memcpy(p, process->pc, size);
+	ft_memcpy(p, process->entry_point + process->position, size);
 	if (size == 2)
 	{
 		swap_uint16(p);
@@ -86,78 +73,63 @@ static void		vm_read(t_process *process, void *p, size_t size)
 		debug(" raw data = 0x%X\n", *((uint8_t*)p));
 	}
 
-	process->pc += size;
+	process->position += size;
 }
 
-static int32_t	*vm_get_param(t_process *process, t_op *op, uint32_t index, uint8_t pcode)
+int32_t		vm_get_param(t_process *process, t_op *op, uint8_t pcode)
 {
-	int32_t	*param;
 	int32_t	temp;
-	int32_t	ptype;
 
-	param = 0;
 	temp = 0;
-	ptype = op->param_types[index];
 	debug(">>  Reading parameter size\n");
-	vm_read(process, &temp, get_param_size(op, ptype, pcode));
-	if ((ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE)) && temp <= REG_NUMBER)
-	{
-		param = (int32_t *)&process->reg[temp];
-	}
-	else if (ptype == T_DIR || ((ptype & T_DIR) && pcode == DIR_CODE))
-	{
-		// FIXME: confusing, handle parameter directly in opcode functions?
-		param = (int32_t *)&process->pc[temp % MEM_SIZE]; //TODO tous les op ont pas de mod
-	}
-	else if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
-	{
-		// FIXME: confusing, handle parameter directly in opcode functions?
-		param = (int32_t *)&process->pc[temp % IDX_MOD];
-	}
-	else
-		__builtin_trap();//ft_error_msg("Invalid parameters\n");//todo
-	return (param);
+	vm_read(process, &temp, get_param_size(op, pcode));
+	return (temp);
 }
 
-void		vm_decode_params(t_process *process, t_op *op, int32_t **params)
+void		vm_decode_params(t_process *process, t_op *op, t_op_data *param)
 {
 	uint8_t	pcode;
-	uint8_t	param_pcodes[4];
 	int		i;
 
 	pcode = 0;
-	ft_bzero(param_pcodes, sizeof(uint8_t) * 4);
 	if (op->has_pcode)
 	{
 		debug(">>  Reading pcode\n");
 		vm_read(process, &pcode, sizeof(pcode));
-		get_param_pcode(pcode, param_pcodes);
+		get_param_pcode(pcode, param->param_pcodes);
 	}
+	else
+		get_param_pcode(0x80, param->param_pcodes);
 	i = 0;
 	while (i < op->nb_params)
 	{
-		params[i] = vm_get_param(process, op, i, param_pcodes[i]);
+		param->params[i] = vm_get_param(process, op, param->param_pcodes[i]);
 		i++;
 	}
 }
 
 void		vm_exec(t_vm *vm, t_process *process)
 {
-	uint8_t	op_code;
-	t_op	*op;
-	int32_t	*params[3];
+	uint8_t		op_code;
+	t_op		*op;
+	t_op_data	param;
 
-	debug(">>  Reading opcode (PC: 0x%X)\n", process->pc);
+	debug(">>  Reading opcode (PC: 0x%X)\n", process->entry_point + process->position);
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
+		vm_dump(vm);
 		ft_error_msg("Process %d created by %s tried to execute an illegal instruction %d\n",
 						process->pid, process->owner->header.name, op_code);
 	}
 	op = &g_op_tab[op_code - 1];
+	process->current_instruction = op;
 	debug("Instruction %s\n", op->name);
-	vm_decode_params(process, op, params);
-	op->handler(vm, process, params);
+	vm_decode_params(process, op, &param);
+	if (check_param(process->current_instruction, &param))
+		op->handler(vm, process, &param);
+	else
+		warning("Invalid arguments!\nInstruction skipped!\n");
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
@@ -165,11 +137,12 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 {
 	t_process	process;
 
-	display_prog(prog);
 	process.carry = false;
 	process.owner = prog;
+	ft_bzero(process.reg, sizeof(uint32_t) * REG_NUMBER);
 	process.reg[0] = prog->id;
-	process.pc = pc;
+	process.entry_point = pc;
+	process.position = 0;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);
 	ft_memcpy(vm->memory + start, prog->program, prog->header.size);
@@ -195,11 +168,23 @@ void		vm_dump(t_vm *vm)
 	int i;
 
 	i = 0;
+	ft_printf("\n0X%X: ", vm->memory + i);
 	while (i < MEM_SIZE)
 	{
 		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0',vm->memory[i]);
 		if (!((i + 1) % 32))
-			ft_printf("\n");
+			ft_printf("\n0X%X: ", vm->memory + i);
 		i++;
+	}
+}
+
+void		process_dump_registers(t_process *process)
+{
+	int i;
+
+	i = -1;
+	while (++i < REG_NUMBER)
+	{
+		ft_printf("0X%X: r%d = %u\n", process->reg + i, process->reg[i]);
 	}
 }

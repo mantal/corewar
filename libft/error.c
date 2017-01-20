@@ -64,5 +64,4 @@ int			ft_perror(void)
 		errno = 0;
 	ft_printf_fd(STDERR, "Error : %s.\n", sys_errlist[errno]);
 	__builtin_trap();
-	return (0);
 }

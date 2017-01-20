@@ -17,7 +17,7 @@ int				error_wrong_param_number_impl(t_inst *instruction,
 {
 	ft_printf("line %d: error: invalid parameter number for instruction %s\n",
 			line_number, g_op_tab[instruction->index].name);
-	return (-1);
+	return (1);
 }
 
 char			*error_wrong_param_number(t_env *env)

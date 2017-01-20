@@ -30,9 +30,11 @@
 
 typedef struct	s_process
 {
-	uint32_t		reg[REG_NUMBER];//TODO? REG_SIZE EST HARDCODE PARTOUT
+	uint32_t		reg[REG_NUMBER + 1];
 	bool			carry;
-	uint8_t			*pc;
+	uint8_t			*entry_point;
+	uint32_t		position;
+	t_op			*current_instruction;
 	unsigned int	pid;
 	const t_program	*owner;
 }				t_process;
@@ -57,4 +59,6 @@ void		live(t_program *prg, t_vm *vm);
 void		tick_cycles(t_vm *vm);
 void		vm_exec(t_vm *vm, t_process *process);
 void		vm_dump(t_vm *vm);
+void		process_dump_registers(t_process *process);
+int			check_param(t_op *op, t_op_data *data);
 #endif

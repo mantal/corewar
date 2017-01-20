@@ -16,6 +16,7 @@
 #include <limits.h>
 #include <fterror.h>
 #include "libft.h"
+#include <ftio.h>
 
 intmax_t	ft_bigatoi(const char *str)
 {
@@ -74,7 +75,7 @@ static int getfree(t_array champions)
 {
 	int		rtn;
 	char	found;
-	int		i;
+	size_t	i;
 
 	rtn = 0;
 	found = false;

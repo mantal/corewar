@@ -34,5 +34,4 @@ int main(int argc, char **argv)
 	vm_exec(vm, array_get(&vm->process, 0));
 	while (true)
 		tick_cycles(vm);
-	return (0);
 }

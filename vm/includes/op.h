@@ -25,10 +25,9 @@
 
 
 # define MAX_ARGS_NUMBER		4
-# define MAX_PLAYERS			4//todo mv
-# define MEM_SIZE				512//
-//# define MEM_SIZE				(4 * 1024)//todo mv
-# define IDX_MOD				(MEM_SIZE / 8)//todo mv
+# define MAX_PLAYERS			4
+# define MEM_SIZE				(4 * 1024)
+# define IDX_MOD				(MEM_SIZE / 8)
 # define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
 # define COMMENT_CHAR			'#'
@@ -51,7 +50,13 @@
 typedef struct	s_vm t_vm;
 typedef struct	s_process t_process;
 
-typedef void (*t_op_handler)(t_vm *vm, t_process *process, int32_t *args[3]);
+typedef struct	s_op_data
+{
+	uint8_t		param_pcodes[3];
+	int32_t		params[3];
+}				t_op_data;
+
+typedef void (*t_op_handler)(t_vm *vm, t_process *process, t_op_data *data);
 
 typedef struct		s_op
 {
@@ -68,21 +73,21 @@ typedef struct		s_op
 
 extern t_op	g_op_tab[17];
 
-void	op_live(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_ld(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_st(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_add(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_sub(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_and(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_or(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_xor(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_zjmp(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_ldi(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_sti(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_fork(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_lld(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_lldi(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_lfork(t_vm *vm, t_process *process, int32_t *args[3]);
-void	op_aff(t_vm *vm, t_process *process, int32_t *args[3]);
+void	op_live(t_vm *vm, t_process *process, t_op_data *data);
+void	op_ld(t_vm *vm, t_process *process, t_op_data *data);
+void	op_st(t_vm *vm, t_process *process, t_op_data *data);
+void	op_add(t_vm *vm, t_process *process, t_op_data *data);
+void	op_sub(t_vm *vm, t_process *process, t_op_data *data);
+void	op_and(t_vm *vm, t_process *process, t_op_data *data);
+void	op_or(t_vm *vm, t_process *process, t_op_data *data);
+void	op_xor(t_vm *vm, t_process *process, t_op_data *data);
+void	op_zjmp(t_vm *vm, t_process *process, t_op_data *data);
+void	op_ldi(t_vm *vm, t_process *process, t_op_data *data);
+void	op_sti(t_vm *vm, t_process *process, t_op_data *data);
+void	op_fork(t_vm *vm, t_process *process, t_op_data *data);
+void	op_lld(t_vm *vm, t_process *process, t_op_data *data);
+void	op_lldi(t_vm *vm, t_process *process, t_op_data *data);
+void	op_lfork(t_vm *vm, t_process *process, t_op_data *data);
+void	op_aff(t_vm *vm, t_process *process, t_op_data *data);
 
 #endif

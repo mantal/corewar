@@ -71,7 +71,7 @@ static int		check_parameter(t_inst *instr, t_list *labels)
 	{
 		if (!(instr->params[i].type & g_op_tab[instr->index].param_types[i]))
 			return (error_wrong_param_type(instr, i));
-		if (get_integer_value(instr, labels, i) < 0)
+		if (get_integer_value(instr, labels, i))
 			return (1);
 		i++;
 	}
@@ -81,6 +81,7 @@ static int		check_parameter(t_inst *instr, t_list *labels)
 int				check_instructions(t_list *list, t_list *labels)
 {
 	int		error;
+	int		is_valid;
 	t_list	*tmp;
 
 	tmp = list;
@@ -89,7 +90,9 @@ int				check_instructions(t_list *list, t_list *labels)
 		return (ft_error_retint("error: no instruction found\n", 1));
 	while (tmp)
 	{
-		error = check_parameter(tmp->content, labels);
+		is_valid = check_parameter(tmp->content, labels);
+		if (!error)
+			error = is_valid;
 		tmp = tmp->next;
 	}
 	return (error);
