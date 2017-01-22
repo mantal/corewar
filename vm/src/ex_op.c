@@ -14,6 +14,12 @@
 #include "program.h"
 #include <ftio.h>
 
+int32_t swap_int32(int32_t val)
+{
+    val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
+	return ((val << 16) | ((val >> 16) & 0xFFFF));
+}
+
 int		check_param(t_op *op, t_op_data *data)
 {
 	int		i;
@@ -96,9 +102,11 @@ int32_t	get_value(t_process *process, t_op_data *data, int index)
 {
 	int32_t	*tmp;
 
-	if ((tmp = get_register(process, data, index)) || (tmp = get_indirect(process, data, index)))
-		return *tmp;
-	return data->params[index];
+	if ((tmp = get_register(process, data, index)))
+		return (*tmp);
+	else if ((tmp = get_indirect(process, data, index)))
+		return (swap_int32(*tmp));
+	return (data->params[index]);
 }
 
 void op_live(t_vm *vm, t_process *process, t_op_data *data)
@@ -213,6 +221,7 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 	int32_t		*real_input;
 	int32_t		*output;
 
+	(void)vm;
 	if (!(output = get_register(process, data, 2)))
 		return ;
 	input[0] = get_value(process, data, 0);
@@ -224,8 +233,8 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
 	real_input = _get_indirect(process, target_addr);
-	*output = *real_input;
-	info("[%d]: ldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *real_input);
+	info("[%d]: ldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *output);
+	*output = swap_int32(*real_input);
 }
 
 void op_sti(t_vm *vm, t_process *process, t_op_data *data)
