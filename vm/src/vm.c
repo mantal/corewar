@@ -151,7 +151,9 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 {
 	t_process	fork;
 	uint32_t	position;
+	int			i;
 
+	i = - 1;
 	if (long_mode)
 		position = ((process->position + pc - 0x3 + MEM_SIZE) % MEM_SIZE);
 	else
@@ -160,7 +162,8 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 	fork.carry = process->carry;
 	fork.owner = process->owner;
 	ft_bzero(fork.reg, sizeof(uint32_t) * REG_NUMBER);
-	fork.reg[0] = process->reg[0];
+	while (++i < REG_NUMBER)
+		fork.reg[i] = process->reg[i];
 	fork.entry_point = process->entry_point;
 	fork.position = position;
 	fork.pid = vm->process.size;
