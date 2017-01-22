@@ -34,6 +34,7 @@ typedef struct	s_process
 	bool			carry;
 	uint8_t			*entry_point;
 	uint32_t		position;
+	uint32_t		op_code_pos;
 	t_op			*current_instruction;
 	unsigned int	pid;
 	const t_program	*owner;

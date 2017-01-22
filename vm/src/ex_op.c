@@ -41,7 +41,7 @@ void	dump_int32(int32_t *param, size_t size)
 	debug("\n");
 }
 
-int32_t	*get_register(t_process *process, t_op_data *data, int index)
+int		is_register(t_process *process, t_op_data *data, int index)
 {
 	int32_t		ptype;
 	int32_t		param;
@@ -50,25 +50,44 @@ int32_t	*get_register(t_process *process, t_op_data *data, int index)
 	ptype = process->current_instruction->param_types[index];
 	param = data->params[index];
 	pcode = data->param_pcodes[index];
-	if ((ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE)) && param <= REG_NUMBER)
+	return ((ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE)) && param <= REG_NUMBER);
+}
+
+int		is_indirect(t_process *process, t_op_data *data, int index)
+{
+	int32_t		ptype;
+	int32_t		pcode;
+
+	ptype = process->current_instruction->param_types[index];
+	pcode = data->param_pcodes[index];
+	return (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE));
+}
+
+int32_t	*get_register(t_process *process, t_op_data *data, int index)
+{
+	int32_t		param;
+
+	param = data->params[index];
+	if (is_register(process, data, index))
 		return ((int32_t *)(process->reg + param));
 	else
 		return (NULL);
 }
 
+int32_t	*_get_indirect(t_process *process, int32_t param)
+{
+	return ((int32_t *)&process->entry_point[(process->op_code_pos + param + MEM_SIZE) % MEM_SIZE]);
+}
+
 int32_t	*get_indirect(t_process *process, t_op_data *data, int index)
 {
-	int32_t		ptype;
 	int32_t		param;
-	int32_t		pcode;
 
-	ptype = process->current_instruction->param_types[index];
 	param = data->params[index];
 	if (process->current_instruction->opcode != 0xA)
 		param = param % IDX_MOD;
-	pcode = data->param_pcodes[index];
-	if (ptype == T_IND || ((ptype & T_IND) && pcode == IND_CODE))
-		return ((int32_t *)&process->entry_point[(process->position + param + MEM_SIZE) % MEM_SIZE]);
+	if (is_indirect(process, data, index))
+		return (_get_indirect(process, param));
 	else
 		return (NULL);
 }
@@ -182,16 +201,31 @@ void op_zjmp(t_vm *vm, t_process *process, t_op_data *data)
 
 	(void)vm;
 	info("[%d]: zjmp 0x%x\n", process->pid, data->params[0]);
-	target = ((process->position + ((int16_t)data->params[0] % IDX_MOD) - 0x3 + MEM_SIZE) % MEM_SIZE);
+	target = ((process->op_code_pos + ((int16_t)data->params[0] % IDX_MOD) + MEM_SIZE) % MEM_SIZE);
 	if (process->carry)
 		process->position = target;
 }
 
 void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 {
-	(void)vm;
-	(void)process;
-	(void)data;
+	int32_t		input[2];
+	int32_t		target_addr;
+	int32_t		*real_input;
+	int32_t		*output;
+
+	if (!(output = get_register(process, data, 2)))
+		return ;
+	input[0] = get_value(process, data, 0);
+	if (!is_register(process, data, 0))
+		input[0] = (int16_t)input[0];
+	target_addr = input[0];
+	input[1] = get_value(process, data, 1);
+	if (!is_register(process, data, 1))
+		input[1] = (int16_t)input[1];
+	target_addr += input[1];
+	real_input = _get_indirect(process, target_addr);
+	*output = *real_input;
+	info("[%d]: ldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *real_input);
 }
 
 void op_sti(t_vm *vm, t_process *process, t_op_data *data)

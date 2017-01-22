@@ -69,9 +69,7 @@ static void		vm_read(t_process *process, void *p, size_t size)
 		debug(" raw data = 0x%X\n", *((uint32_t*)p));
 	}
 	else
-	{
 		debug(" raw data = 0x%X\n", *((uint8_t*)p));
-	}
 
 	process->position += size;
 }
@@ -114,6 +112,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 	t_op		*op;
 	t_op_data	param;
 
+	process->op_code_pos = process->position;
 	debug(">>  Reading opcode (PC: 0x%X)\n", process->entry_point + process->position);
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
@@ -207,6 +206,6 @@ void		process_dump_registers(t_process *process)
 	i = -1;
 	while (++i < REG_NUMBER)
 	{
-		ft_printf("0X%X: r%d = %u\n", process->reg + i, process->reg[i]);
+		ft_printf("0X%X: r%d = %u\n", process->reg + i, i, process->reg[i]);
 	}
 }
