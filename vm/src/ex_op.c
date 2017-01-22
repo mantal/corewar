@@ -203,9 +203,8 @@ void op_sti(t_vm *vm, t_process *process, t_op_data *data)
 
 void op_fork(t_vm *vm, t_process *process, t_op_data *data)
 {
-	(void)vm;
-	(void)process;
-	(void)data;
+	info("[%d]: fork 0x%x\n", process->pid, data->params[0]);
+	vm_fork(vm, process, (int16_t)data->params[0], 0);
 }
 
 void op_lld(t_vm *vm, t_process *process, t_op_data *data)
@@ -229,9 +228,8 @@ void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
 
 void op_lfork(t_vm *vm, t_process *process, t_op_data *data)
 {
-	(void)vm;
-	(void)process;
-	(void)data;
+	info("[%d]: lfork 0x%x\n", process->pid, data->params[0]);
+	vm_fork(vm, process, (int16_t)data->params[0], 1);
 }
 
 void op_aff(t_vm *vm, t_process *process, t_op_data *data)
@@ -239,6 +237,7 @@ void op_aff(t_vm *vm, t_process *process, t_op_data *data)
 	int32_t	*input;
 
 	(void)vm;
+	info("[%d]: aff 0x%x\n", process->pid, data->params[0]);
 	input = get_register(process, data, 0);
 	ft_putchar((char)(*input % 256));
 }

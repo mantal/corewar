@@ -17,21 +17,22 @@
 int main(int argc, char **argv)
 {
 	t_vm		*vm;
+	t_program	*prog;
 	int i;
 
-	//g_ftio_verbose_level = FTIO_DEBUG;
+	g_ftio_verbose_level = FTIO_DEBUG;
 	vm = vm_new();
 	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc - 1, argv + 1, vm);
 	i = vm->programs.size - 1;
 	while (i >= 0)
 	{
-		vm_new_process(vm, array_get(&vm->programs, i), vm->memory,
-			(MEM_SIZE / vm->programs.size) * i);
+		prog = array_get(&vm->programs, i);
+		vm_new_process(vm, prog, vm->memory, 0);
+		ft_memcpy(vm->memory + (MEM_SIZE / vm->programs.size) * i, prog->program, prog->header.size);
 		i--;
 	}
 
-	vm_exec(vm, array_get(&vm->process, 0));
 	while (true)
 		tick_cycles(vm);
 }

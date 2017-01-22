@@ -78,7 +78,7 @@ static void stop(t_vm *vm)
 
 void tick_cycles(t_vm *vm)
 {
-    int i;
+    long i;
 
     i = vm->process.size;
     while (--i >= 0)

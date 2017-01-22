@@ -133,7 +133,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
-	size_t start)
+	uint32_t start)
 {
 	t_process	process;
 
@@ -142,10 +142,29 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	ft_bzero(process.reg, sizeof(uint32_t) * REG_NUMBER);
 	process.reg[0] = prog->id;
 	process.entry_point = pc;
-	process.position = 0;
+	process.position = start;
 	process.pid = vm->process.size;
 	array_add(&vm->process, &process);
-	ft_memcpy(vm->memory + start, prog->program, prog->header.size);
+}
+
+void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
+{
+	t_process	fork;
+	uint32_t	position;
+
+	if (long_mode)
+		position = ((process->position + pc - 0x3 + MEM_SIZE) % MEM_SIZE);
+	else
+		position = ((process->position + (pc % IDX_MOD) - 0x3 + MEM_SIZE) % MEM_SIZE);
+
+	fork.carry = process->carry;
+	fork.owner = process->owner;
+	ft_bzero(fork.reg, sizeof(uint32_t) * REG_NUMBER);
+	fork.reg[0] = process->reg[0];
+	fork.entry_point = process->entry_point;
+	fork.position = position;
+	fork.pid = vm->process.size;
+	array_add(&vm->process, &fork);
 }
 
 t_vm		*vm_new(void)
