@@ -56,7 +56,7 @@ int		is_register(t_process *process, t_op_data *data, int index)
 	ptype = process->current_instruction->param_types[index];
 	param = data->params[index];
 	pcode = data->param_pcodes[index];
-	return ((ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE)) && param <= REG_NUMBER);
+	return ((ptype == T_REG || ((ptype & T_REG) && pcode == REG_CODE)) && param > 0 && param <= REG_NUMBER);
 }
 
 int		is_indirect(t_process *process, t_op_data *data, int index)
@@ -75,7 +75,7 @@ int32_t	*get_register(t_process *process, t_op_data *data, int index)
 
 	param = data->params[index];
 	if (is_register(process, data, index))
-		return ((int32_t *)(process->reg + param));
+		return ((int32_t *)(process->reg + param - 1));
 	else
 		return (NULL);
 }
