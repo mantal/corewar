@@ -6,7 +6,7 @@
 /*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/19 10:26:32 by tguillem          #+#    #+#             */
-/*   Updated: 2016/12/19 10:47:21 by tguillem         ###   ########.fr       */
+/*   Updated: 2017/01/23 18:36:22 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	read_lines(int fd, t_env *env)
 	int		error;
 
 	error = 0;
-	while ((ret = ft_get_next(fd, &env->line, '\n')) > 0)
+	while ((ret = get_next(fd, &env->line, '\n')) > 0)
 	{
 		if (parse_line(env))
 			error = 1;
