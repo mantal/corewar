@@ -17,7 +17,7 @@
 
 void live(t_program *prg, t_vm *vm)
 {
-    ft_printf("un processus dit que le joueur %s(%s) est en vie", prg->id,
+    ft_printf("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
         prg->header.name);
     prg->alive = true;
     vm->lives++;
@@ -57,11 +57,11 @@ static void print_alive(t_vm *vm)
         {
             if (alive == 1)
             {
-                ft_printf("%s(%s) is the winner!\n", ((t_program*)array_get(&vm->programs,
+                ft_printf("%d(%s) a gagne\n", ((t_program*)array_get(&vm->programs,
                     i))->id, ((t_program*)array_get(&vm->programs, i))->header.name);
                 break ;
             }
-            ft_printf("%s(%s) is still alive!\n", ((t_program*)array_get(&vm->programs,
+            ft_printf("%d(%s) is still alive!\n", ((t_program*)array_get(&vm->programs,
                 i))->id, ((t_program*)array_get(&vm->programs, i))->header.name);
         }
         i++;

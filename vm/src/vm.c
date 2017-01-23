@@ -189,12 +189,11 @@ void		vm_dump(t_vm *vm)
 	int i;
 
 	i = 0;
-	ft_printf("\n0X%X: ", vm->memory + i);
 	while (i < MEM_SIZE)
 	{
 		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0',vm->memory[i]);
 		if (!((i + 1) % 32))
-			ft_printf("\n0X%X: ", vm->memory + i);
+			ft_printf("\n");
 		i++;
 	}
 }

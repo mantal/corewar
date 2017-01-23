@@ -112,8 +112,25 @@ int32_t	get_value(t_process *process, t_op_data *data, int index)
 
 void op_live(t_vm *vm, t_process *process, t_op_data *data)
 {
-	(void)vm;
-	info("[%d]: live %d\n", process->pid, data->params[0]);
+	int	id;
+	uint32_t	i;
+	t_program	*prgm;
+
+	prgm = NULL;
+	i = 0;
+	id = data->params[0];
+	info("[%d]: live %d\n", process->pid, id);
+	while (i < vm->programs.size)
+	{
+		prgm = array_get(&vm->programs, i);
+		if (prgm->id == id)
+			break ;
+		else
+			prgm = NULL;
+		i++;
+	}
+	if (prgm)
+		live(prgm, vm);
 }
 
 void op_ld(t_vm *vm, t_process *process, t_op_data *data)

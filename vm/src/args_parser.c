@@ -126,7 +126,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 			ft_putstr(argv[i]);
 			ft_putstr("\n");
 			array_add(&vm->programs, load_program(argv[i], !input_id
-				? getfree(vm->programs) : id));
+				? getfree(vm->programs) - 1 : id));
 			input_id = false;
 		}
 		i++;
