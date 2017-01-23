@@ -90,7 +90,8 @@ int32_t	*get_indirect(t_process *process, t_op_data *data, int index)
 	int32_t		param;
 
 	param = data->params[index];
-	if (process->current_instruction->opcode != 0xA)
+	if (process->current_instruction->opcode != 0xA
+		&& process->current_instruction->opcode != 0xE)
 		param = param % IDX_MOD;
 	if (is_indirect(process, data, index))
 		return (_get_indirect(process, param));
@@ -130,13 +131,22 @@ void op_ld(t_vm *vm, t_process *process, t_op_data *data)
 void op_st(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		*input_one;
+	int32_t		res;
+	int8_t		need_swap;
 	int32_t		*output;
 
 	(void)vm;
-	if (!(input_one = get_register(process, data, 0)) || (!(output = get_register(process, data, 1)) && !(output = get_indirect(process, data, 1))))
-		return ;
+	need_swap = 0;
+	if (!(input_one = get_register(process, data, 0)) || !(output = get_register(process, data, 1)))
+	{
+		if (input_one && (output = get_indirect(process, data, 1)))
+			need_swap = 1;
+		else
+			return ;
+	}
 	info("[%d]: st r%d %d\n", process->pid, data->params[0], data->params[1]);
-	*output = *input_one;
+	res = need_swap ? swap_int32(*input_one) : *input_one;
+	*output = res;
 }
 
 void op_add(t_vm *vm, t_process *process, t_op_data *data)
@@ -170,12 +180,16 @@ void op_sub(t_vm *vm, t_process *process, t_op_data *data)
 void op_and(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		*output;
+	int32_t		input_one;
+	int32_t		input_two;
 
 	(void)vm;
 	if (!(output = get_register(process, data, 2)))
 		return ;
-	info("[%d]: and %d, %d, %d\n", process->pid, data->params[0], data->params[1], data->params[2]);
-	*output = get_value(process, data, 0) & get_value(process, data, 1);
+	input_one = get_value(process, data, 0);
+	input_two = get_value(process, data, 1);
+	info("[%d]: and %d, %d, r%d\n", process->pid, input_one, input_two, data->params[2]);
+	*output = input_one & input_two;
 	process->carry = *output == 0;
 }
 
@@ -232,16 +246,32 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 	if (!is_register(process, data, 1))
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
-	real_input = _get_indirect(process, target_addr);
+	real_input = _get_indirect(process, target_addr % IDX_MOD);
 	info("[%d]: ldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *output);
 	*output = swap_int32(*real_input);
 }
 
 void op_sti(t_vm *vm, t_process *process, t_op_data *data)
 {
+	int32_t		input[2];
+	int32_t		target_addr;
+	int32_t		*real_ouput;
+	int32_t		*input_reg;
+
 	(void)vm;
-	(void)process;
-	(void)data;
+	if (!(input_reg = get_register(process, data, 0)))
+		return ;
+	input[0] = get_value(process, data, 1);
+	if (!is_register(process, data, 1))
+		input[0] = (int16_t)input[0];
+	target_addr = input[0];
+	input[1] = get_value(process, data, 2);
+	if (!is_register(process, data, 2))
+		input[1] = (int16_t)input[1];
+	target_addr += input[1];
+	real_ouput = _get_indirect(process, target_addr % IDX_MOD);
+	info("[%d]: sti r%d, %d, %d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *real_ouput);
+	*real_ouput = swap_int32(*input_reg);
 }
 
 void op_fork(t_vm *vm, t_process *process, t_op_data *data)
@@ -264,9 +294,25 @@ void op_lld(t_vm *vm, t_process *process, t_op_data *data)
 
 void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
 {
+	int32_t		input[2];
+	int32_t		target_addr;
+	int32_t		*real_input;
+	int32_t		*output;
+
 	(void)vm;
-	(void)process;
-	(void)data;
+	if (!(output = get_register(process, data, 2)))
+		return ;
+	input[0] = get_value(process, data, 0);
+	if (!is_register(process, data, 0))
+		input[0] = (int16_t)input[0];
+	target_addr = input[0];
+	input[1] = get_value(process, data, 1);
+	if (!is_register(process, data, 1))
+		input[1] = (int16_t)input[1];
+	target_addr += input[1];
+	real_input = _get_indirect(process, target_addr);
+	info("[%d]: lldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *output);
+	*output = swap_int32(*real_input);
 }
 
 void op_lfork(t_vm *vm, t_process *process, t_op_data *data)
