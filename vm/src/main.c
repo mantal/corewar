@@ -19,6 +19,7 @@ int main(int argc, char **argv)
 	t_vm		*vm;
 	t_program	*prog;
 	int i;
+	int			spacing;
 
 	g_ftio_verbose_level = FTIO_DEBUG;
 	vm = vm_new();
@@ -27,9 +28,10 @@ int main(int argc, char **argv)
 	i = vm->programs.size - 1;
 	while (i >= 0)
 	{
+		spacing = ((MEM_SIZE / vm->programs.size) * i) % MEM_SIZE;
 		prog = array_get(&vm->programs, i);
-		vm_new_process(vm, prog, vm->memory, 0);
-		ft_memcpy(vm->memory + (MEM_SIZE / vm->programs.size) * i, prog->program, prog->header.size);
+		vm_new_process(vm, prog, vm->memory + spacing, 0);
+		ft_memcpy(vm->memory + spacing, prog->program, prog->header.size);
 		i--;
 	}
 
