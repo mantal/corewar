@@ -47,6 +47,37 @@ static void	swap_uint16(uint16_t *n)
 	*n = (uint16_t)((*n >> 8) | (*n << 8));
 }
 
+void	vm_memread(t_process *process, void *ptr, int pos, size_t size)
+{
+	char		*target;
+	size_t		i;
+
+	i = 0;
+	target = ptr;
+	while (i < size)
+	{
+		target[i] = process->entry_point[(pos + i + MEM_SIZE) % MEM_SIZE]; 
+		i++;
+	}
+}
+
+void	vm_memwrite(t_process *process, void *ptr, int pos, int32_t size)
+{
+	char		*target;
+	int32_t	y;
+	int32_t	i;
+
+	i = size - 1;
+	y = 0;
+	target = (char*)ptr;
+	while (i >= 0)
+	{
+		process->entry_point[(pos + y + MEM_SIZE) % MEM_SIZE] = target[i]; 
+		i--;
+		y++;
+	}
+}
+
 static void		vm_read(t_process *process, void *p, size_t size)
 {
 	//TODO handle signed
@@ -57,7 +88,7 @@ static void		vm_read(t_process *process, void *p, size_t size)
 		return ;
 	}
 
-	ft_memcpy(p, process->entry_point + process->position, size);
+	vm_memread(process, p, process->position, size);
 	if (size == 2)
 	{
 		swap_uint16(p);
@@ -113,7 +144,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 	t_op_data	param;
 
 	process->op_code_pos = process->position;
-	debug(">>  Reading opcode (PC: 0x%X)\n", process->entry_point + process->position);
+	debug(">>  Reading opcode (PC: 0x%X)\n", process->entry_point + process->op_code_pos);
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
@@ -154,9 +185,9 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 
 	i = - 1;
 	if (long_mode)
-		position = ((process->position + pc - 0x3 + MEM_SIZE) % MEM_SIZE);
+		position = ((process->op_code_pos + pc + MEM_SIZE) % MEM_SIZE);
 	else
-		position = ((process->position + (pc % IDX_MOD) - 0x3 + MEM_SIZE) % MEM_SIZE);
+		position = ((process->op_code_pos + (pc % IDX_MOD) + MEM_SIZE) % MEM_SIZE);
 
 	fork.carry = process->carry;
 	fork.owner = process->owner;
@@ -189,11 +220,12 @@ void		vm_dump(t_vm *vm)
 	int i;
 
 	i = 0;
+	ft_printf("\n0x%x : ", i);
 	while (i < MEM_SIZE)
 	{
-		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0',vm->memory[i]);
-		if (!((i + 1) % 32))
-			ft_printf("\n");
+		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0', vm->memory[i]);
+		if (!((i + 1) % 64))
+			ft_printf("\n0x%x : ", i);
 		i++;
 	}
 }

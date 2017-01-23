@@ -63,4 +63,6 @@ void		vm_dump(t_vm *vm);
 void		process_dump_registers(t_process *process);
 int			check_param(t_op *op, t_op_data *data);
 void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode);
+void		vm_memread(t_process *process, void *ptr, int pos, size_t size);
+void		vm_memwrite(t_process *process, void *ptr, int pos, int32_t size);
 #endif

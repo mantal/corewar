@@ -80,33 +80,23 @@ int32_t	*get_register(t_process *process, t_op_data *data, int index)
 		return (NULL);
 }
 
-int32_t	*_get_indirect(t_process *process, int32_t param)
-{
-	return ((int32_t *)&process->entry_point[(process->op_code_pos + param + MEM_SIZE) % MEM_SIZE]);
-}
-
-int32_t	*get_indirect(t_process *process, t_op_data *data, int index)
-{
-	int32_t		param;
-
-	param = data->params[index];
-	if (process->current_instruction->opcode != 0xA
-		&& process->current_instruction->opcode != 0xE)
-		param = param % IDX_MOD;
-	if (is_indirect(process, data, index))
-		return (_get_indirect(process, param));
-	else
-		return (NULL);
-}
-
 int32_t	get_value(t_process *process, t_op_data *data, int index)
 {
 	int32_t	*tmp;
+	int32_t	tmp_ind;
 
+	tmp_ind = data->params[index];
+	if (process->current_instruction->opcode != 0xA
+		&& process->current_instruction->opcode != 0xD
+		&& process->current_instruction->opcode != 0xE)
+		tmp_ind %= IDX_MOD;
 	if ((tmp = get_register(process, data, index)))
 		return (*tmp);
-	else if ((tmp = get_indirect(process, data, index)))
-		return (swap_int32(*tmp));
+	else if (is_indirect(process, data, index))
+	{
+		vm_memread(process, &tmp_ind, process->op_code_pos + tmp_ind, sizeof(tmp_ind));
+		return (swap_int32(tmp_ind));
+	}
 	return (data->params[index]);
 }
 
@@ -148,22 +138,24 @@ void op_ld(t_vm *vm, t_process *process, t_op_data *data)
 void op_st(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		*input_one;
-	int32_t		res;
-	int8_t		need_swap;
+	int8_t		indirect_write;
 	int32_t		*output;
 
 	(void)vm;
-	need_swap = 0;
+	output = NULL;
+	indirect_write = 0;
 	if (!(input_one = get_register(process, data, 0)) || !(output = get_register(process, data, 1)))
 	{
-		if (input_one && (output = get_indirect(process, data, 1)))
-			need_swap = 1;
+		if (input_one && is_indirect(process, data, 1))
+			indirect_write = 1;
 		else
 			return ;
 	}
 	info("[%d]: st r%d %d\n", process->pid, data->params[0], data->params[1]);
-	res = need_swap ? swap_int32(*input_one) : *input_one;
-	*output = res;
+	if (indirect_write)
+		vm_memwrite(process, input_one, process->op_code_pos + data->params[1], sizeof(*input_one));
+	else
+		*output = *input_one;
 }
 
 void op_add(t_vm *vm, t_process *process, t_op_data *data)
@@ -249,7 +241,6 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		input[2];
 	int32_t		target_addr;
-	int32_t		*real_input;
 	int32_t		*output;
 
 	(void)vm;
@@ -263,16 +254,15 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 	if (!is_register(process, data, 1))
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
-	real_input = _get_indirect(process, target_addr % IDX_MOD);
-	info("[%d]: ldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *output);
-	*output = swap_int32(*real_input);
+	info("[%d]: ldi %d, %d, r%d\n", process->pid, data->params[0], data->params[1],  data->params[2]);
+	vm_memread(process, output, process->op_code_pos + (target_addr % IDX_MOD), sizeof(*output)); // TODO: check if IDX_MOD needed here
+	*output = swap_int32(*output);
 }
 
 void op_sti(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		input[2];
 	int32_t		target_addr;
-	int32_t		*real_ouput;
 	int32_t		*input_reg;
 
 	(void)vm;
@@ -286,9 +276,8 @@ void op_sti(t_vm *vm, t_process *process, t_op_data *data)
 	if (!is_register(process, data, 2))
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
-	real_ouput = _get_indirect(process, target_addr % IDX_MOD);
-	info("[%d]: sti r%d, %d, %d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *real_ouput);
-	*real_ouput = swap_int32(*input_reg);
+	info("[%d]: sti r%d, %d, %d\n", process->pid, data->params[0], data->params[1],  data->params[2]);
+	vm_memwrite(process, input_reg, process->op_code_pos + (target_addr % IDX_MOD), sizeof(*input_reg));
 }
 
 void op_fork(t_vm *vm, t_process *process, t_op_data *data)
@@ -313,7 +302,6 @@ void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
 {
 	int32_t		input[2];
 	int32_t		target_addr;
-	int32_t		*real_input;
 	int32_t		*output;
 
 	(void)vm;
@@ -327,9 +315,9 @@ void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
 	if (!is_register(process, data, 1))
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
-	real_input = _get_indirect(process, target_addr);
-	info("[%d]: lldi %d, %d, r%d (%x)\n", process->pid, data->params[0], data->params[1],  data->params[2], *output);
-	*output = swap_int32(*real_input);
+	info("[%d]: lldi %d, %d, r%d\n", process->pid, data->params[0], data->params[1],  data->params[2]);
+	vm_memread(process, output, process->op_code_pos + target_addr, sizeof(*output));
+	*output = swap_int32(*output);
 }
 
 void op_lfork(t_vm *vm, t_process *process, t_op_data *data)
