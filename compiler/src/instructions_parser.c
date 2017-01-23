@@ -89,7 +89,7 @@ int				parse_instructions(t_env *env, char *data)
 			return (error_label_expected(env, data));
 	}
 	if (parse_parameters(env, data +
-				ft_strlen(g_op_tab[env->current_instruction.index].name)) < 0)
+				ft_strlen(g_op_tab[env->current_instruction.index].name)))
 		return (1);
 	env->current_instruction.offset = env->current_offset;
 	env->current_instruction.line_number = env->line_number;
