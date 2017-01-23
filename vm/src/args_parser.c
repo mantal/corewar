@@ -103,7 +103,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 	char	check_id;
 
 	i = 0;
-	id = -1;
+	id = 0;
 	check_id = false;
 	input_id = false;
 	while (i < argc)
@@ -125,7 +125,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 		{
 			ft_putstr(argv[i]);
 			ft_putstr("\n");
-			array_add(&vm->programs, load_program(argv[i], input_id
+			array_add(&vm->programs, load_program(argv[i], !input_id
 				? getfree(vm->programs) : id));
 			input_id = false;
 		}
