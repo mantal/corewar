@@ -20,15 +20,18 @@
 
 static int	load_header(t_header *header, int fd)
 {
+	uint32_t	blbl;
 	ft_bzero(header, sizeof(t_header));
 	read(fd, &header->magic, sizeof(header->magic));//TODO CHECK RETOUR READ
 	swap_uint32(&header->magic);
+	if (header->magic != COREWAR_EXEC_MAGIC)
+		return (-1);
 	read(fd, &header->name, sizeof(header->name) - 1);
 	read(fd, &header->size, 4);
 	read(fd, &header->size, sizeof(header->size));
 	swap_uint32(&header->size);
 	read(fd, &header->description, sizeof(header->description) - 1);
-	uint32_t blbl; read(fd, &blbl, sizeof(blbl));
+	read(fd, &blbl, sizeof(blbl));
 	return (fd);
 }
 
@@ -59,7 +62,8 @@ t_program	*load_program(const char *path, int id)
 	prog->id = id;
 	prog->alive = false;
 	fd = ft_open(path, O_RDONLY);
-	load_header(&prog->header, fd);
+	if (load_header(&prog->header, fd) == -1)
+		return (NULL);
 	prog->program = ft_malloc(prog->header.size * sizeof(uint8_t));
 	read(fd, prog->program, prog->header.size * sizeof(uint8_t));
 	ft_close(fd);

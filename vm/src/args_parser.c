@@ -97,10 +97,11 @@ static int getfree(t_array champions)
 
 static void parse_champions(int argc, char **argv, t_vm *vm)
 {
-	int		i;
-	int		id;
-	char	input_id;
-	char	check_id;
+	int			i;
+	int			id;
+	char		input_id;
+	char		check_id;
+	t_program	*prg;
 
 	i = 0;
 	id = 0;
@@ -125,8 +126,10 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 		{
 			ft_putstr(argv[i]);
 			ft_putstr("\n");
-			array_add(&vm->programs, load_program(argv[i], !input_id
-				? getfree(vm->programs) - 1 : id));
+			if (!(prg = load_program(argv[i], !input_id
+			         ? getfree(vm->programs) - 1 : id)))
+				ft_error_msg("Invalid champion %s\n", argv[i]);
+			array_add(&vm->programs, prg);
 			input_id = false;
 		}
 		i++;
