@@ -14,7 +14,7 @@
 
 bool	is_comment_char(char c)
 {
-	return (COMMENT_CHAR == c);
+	return (COMMENT_CHAR == c || COMMENT_CHAR_ASM == c);
 }
 
 bool	is_whitespace(char c)
