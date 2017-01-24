@@ -83,7 +83,7 @@ void tick_cycles(t_vm *vm)
     i = vm->process.size;
     while (--i >= 0)
         vm_exec(vm, array_get(&vm->process, i));
-    if (false && vm->current_cycle == vm->next_die)
+    if (vm->current_cycle == vm->next_die)
     {
         i = 0;
         while (i < vm->process.size)

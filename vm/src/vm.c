@@ -81,7 +81,7 @@ void	vm_memwrite(t_process *process, void *ptr, int pos, int32_t size)
 static void		vm_read(t_process *process, void *p, size_t size)
 {
 	//TODO handle signed
-	debug("        Read %d bytes at position 0x%X", size, process->entry_point + process->position);
+	debug("[%u]        Read %d bytes at position 0x%X", process->pid, size, process->entry_point + process->position);
 	if (size == 0)
 	{
 		debug("\n");
@@ -110,7 +110,7 @@ int32_t		vm_get_param(t_process *process, t_op *op, uint8_t pcode)
 	int32_t	temp;
 
 	temp = 0;
-	debug(">>  Reading parameter size\n");
+	debug("[%u]>>  Reading parameter size\n", process->pid);
 	vm_read(process, &temp, get_param_size(op, pcode));
 	return (temp);
 }
@@ -123,7 +123,7 @@ void		vm_decode_params(t_process *process, t_op *op, t_op_data *param)
 	pcode = 0;
 	if (op->has_pcode)
 	{
-		debug(">>  Reading pcode\n");
+		debug("[%u]>>  Reading pcode\n", process->pid);
 		vm_read(process, &pcode, sizeof(pcode));
 		get_param_pcode(pcode, param->param_pcodes);
 	}
@@ -144,22 +144,22 @@ void		vm_exec(t_vm *vm, t_process *process)
 	t_op_data	param;
 
 	process->op_code_pos = process->position;
-	debug(">>  Reading opcode (PC: 0x%X)\n", process->entry_point + process->op_code_pos);
+	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid, process->entry_point + process->op_code_pos);
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
-		vm_dump(vm);
-		ft_error_msg("Process %d created by %s tried to execute an illegal instruction %d\n",
+		warning("Process %u created by %s tried to execute an illegal instruction %d\n",
 						process->pid, process->owner->header.name, op_code);
+		return ;
 	}
 	op = &g_op_tab[op_code - 1];
 	process->current_instruction = op;
-	debug("Instruction %s\n", op->name);
+	debug("[%u] Instruction %s\n", process->pid, op->name);
 	vm_decode_params(process, op, &param);
 	if (check_param(process->current_instruction, &param))
 		op->handler(vm, process, &param);
 	else
-		warning("Invalid arguments!\nInstruction skipped!\n");
+		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
