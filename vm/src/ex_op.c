@@ -255,7 +255,7 @@ void op_ldi(t_vm *vm, t_process *process, t_op_data *data)
 		input[1] = (int16_t)input[1];
 	target_addr += input[1];
 	info("[%d]: ldi %d, %d, r%d\n", process->pid, data->params[0], data->params[1],  data->params[2]);
-	vm_memread(process, output, process->op_code_pos + (target_addr % IDX_MOD), sizeof(*output)); // TODO: check if IDX_MOD needed here
+	vm_memread(process, output, process->op_code_pos + (target_addr % IDX_MOD), sizeof(*output));
 	*output = swap_int32(*output);
 }
 
@@ -318,6 +318,7 @@ void op_lldi(t_vm *vm, t_process *process, t_op_data *data)
 	info("[%d]: lldi %d, %d, r%d\n", process->pid, data->params[0], data->params[1],  data->params[2]);
 	vm_memread(process, output, process->op_code_pos + target_addr, sizeof(*output));
 	*output = swap_int32(*output);
+	process->carry = *output == 0;
 }
 
 void op_lfork(t_vm *vm, t_process *process, t_op_data *data)
