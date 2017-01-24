@@ -208,6 +208,7 @@ t_vm		*vm_new(void)
 	vm->lives = 0;
 	vm->current_cycle = 0;
 	vm->cycles_to_die = CYCLE_TO_DIE;
+	vm->next_die = vm->cycles_to_die;
 	ft_bzero(vm->memory, sizeof(vm->memory));
 	info("Virtual memory start at position 0x%X\n", vm->memory);
 	array_init(&vm->programs, sizeof(t_program), 0);

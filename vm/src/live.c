@@ -85,6 +85,7 @@ void tick_cycles(t_vm *vm)
         vm_exec(vm, array_get(&vm->process, i));
     if (vm->current_cycle == vm->next_die)
     {
+        info("%d = %d\n", vm->current_cycle, vm->next_die);
         i = 0;
         while (i < vm->process.size)
         {
