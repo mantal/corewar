@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 17:24:48 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/24 15:21:43 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ t_vm		*vm_new(void)
 	vm->current_cycle = 0;
 	vm->cycles_to_die = CYCLE_TO_DIE;
 	vm->next_die = vm->cycles_to_die;
+	vm->last_die_decr = 0;
 	ft_bzero(vm->memory, sizeof(vm->memory));
 	info("Virtual memory start at position 0x%X\n", vm->memory);
 	array_init(&vm->programs, sizeof(t_program), 0);

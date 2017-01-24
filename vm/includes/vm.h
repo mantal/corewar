@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 16:30:31 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/24 15:21:29 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct	s_vm
 	int			lives;
 	int			cycles_to_die;
 	int			next_die;
+	int			last_die_decr;
 }				t_vm;
 
 t_vm		*vm_new(void);
