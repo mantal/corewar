@@ -150,6 +150,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 	{
 		warning("Process %u created by %s tried to execute an illegal instruction %d\n",
 						process->pid, process->owner->header.name, op_code);
+		vm->current_cycle++;
 		return ;
 	}
 	op = &g_op_tab[op_code - 1];
@@ -160,6 +161,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 		op->handler(vm, process, &param);
 	else
 		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
+	vm->current_cycle += op->nb_cycles;
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
