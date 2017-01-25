@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dumper.c                                           :+:      :+:    :+:   */
+/*   live2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/24 18:00:22 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 18:39:31 by bel-baz          ###   ########.fr       */
+/*   Created: 2017/01/25 18:37:13 by bel-baz           #+#    #+#             */
+/*   Updated: 2017/01/25 18:37:32 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ftio.h"
 #include "vm.h"
+#include "load.h"
+#include <ftio.h>
+#include <stdlib.h>
 
-void		vm_dump(t_vm *vm)
+void		live(t_program *prg, t_vm *vm)
 {
-	int i;
-
-	i = 0;
-	ft_printf("\n0x%x   : ", i);
-	while (i < MEM_SIZE)
-	{
-		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0', vm->memory[i]);
-		if (!((i + 1) % 64) && i + 1 < MEM_SIZE)
-		{
-			if (i < 256)
-				ft_printf("\n0x%x  : ", i);
-			else
-				ft_printf("\n0x%x : ", i);
-		}
-		i++;
-	}
+	ft_printf("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
+		prg->header.name);
+	if (!prg->alive)
+		array_add(&vm->last_live, prg);
+	prg->alive = true;
+	vm->lives++;
 }
