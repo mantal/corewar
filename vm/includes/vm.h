@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 17:49:36 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 17:56:53 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,22 @@ typedef struct		s_process
 	uint32_t		op_code_pos;
 	t_op			*current_instruction;
 	unsigned int	pid;
-	const t_program	*owner;
+	t_program		*owner;
+	int				freeze;
 }					t_process;
 
 typedef struct		s_vm
 {
-	t_array			programs;
-	t_array			process;
-	uint8_t			memory[MEM_SIZE];
-	int				current_cycle;
-	int				max_cycles;
-	int				lives;
-	int				cycles_to_die;
-	int				next_die;
+	t_array		programs;
+	t_array		process;
+	uint8_t		memory[MEM_SIZE];
+	int			current_cycle;
+	int			max_cycles;
+	int			lives;
+	int			cycles_to_die;
+	int			next_die;
+	int			last_die_decr;
+	t_array		last_live;
 }					t_vm;
 
 t_vm				*vm_new(void);

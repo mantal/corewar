@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2017/01/17 16:06:00 by bel-baz          ###   ########.fr        #
+#    Updated: 2017/01/24 18:04:54 by bel-baz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c load.c vm.c vm_2.c vm_memory.c args_parser.c args_parser_2.c live.c number_utils.c op.c op_2.c op_3.c op_4.c op_utils.c op_utils_2.c
+SRC= main.c load.c vm.c vm_2.c vm_memory.c args_parser.c args_parser_2.c live.c number_utils.c op.c op_2.c op_3.c op_4.c op_utils.c op_utils_2.c dumper.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
@@ -43,7 +43,7 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o $(NAME) -I./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon
+	@$(CC) -o $(NAME) -I./../libft -L./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))

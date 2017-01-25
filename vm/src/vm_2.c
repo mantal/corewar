@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 16:17:11 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:08:47 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 	{
 		warning("Process %u created by %s tried to execute an illegal \
 		instruction %d\n", process->pid, process->owner->header.name, op_code);
-		vm->current_cycle++;
+		process->freeze = 1;
 		return ;
 	}
 	op = &g_op_tab[op_code - 1];
@@ -60,7 +60,7 @@ void		vm_exec(t_vm *vm, t_process *process)
 		op->handler(vm, process, &param);
 	else
 		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
-	vm->current_cycle += op->nb_cycles;
+	process->freeze += op->nb_cycles;
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
@@ -75,6 +75,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	process.entry_point = pc;
 	process.position = start;
 	process.pid = vm->process.size;
+	process.freeze = 0;
 	array_add(&vm->process, &process);
 }
 
@@ -98,6 +99,7 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 	fork.entry_point = process->entry_point;
 	fork.position = position;
 	fork.pid = vm->process.size;
+	fork.freeze = 0;
 	array_add(&vm->process, &fork);
 }
 

@@ -34,7 +34,8 @@ static int		parse_extra(t_env *env, char *data, char *type, char *prev_data)
 	data += ft_strlen(type);
 	if (*prev_data)
 		return (error_duplicate_symbol(env, type));
-	if (extract_quote_str(env, &data, &end, PROG_NAME_LENGTH))
+	if (extract_quote_str(env, &data, &end, !ft_strcmp(type, NAME_CMD_STRING) ?
+			PROG_NAME_LENGTH : COMMENT_LENGTH))
 		return (1);
 	ft_strncpy(prev_data, data + 1, (end - 1) - (data + 1) + 1);
 	if (!is_end_of_line(end + 1))

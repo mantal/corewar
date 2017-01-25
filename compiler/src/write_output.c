@@ -15,11 +15,15 @@
 static char		*get_output_name(char *path)
 {
 	char	*new;
+	int		size;
 	char	*tmp;
 
-	new = ft_strdup(path);
+	size = ft_strlen(path);
+	new = ft_malloc(size + 4);
 	if (!new)
 		return (NULL);
+	bzero(new, size + 4);
+	ft_memcpy(new, path, size);
 	if (!(tmp = ft_strrchr(new, '/')))
 		tmp = new;
 	if ((tmp = ft_strrchr(tmp, '.')))

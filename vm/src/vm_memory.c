@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 15:47:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 17:27:36 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:10:43 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,6 @@ void	vm_memwrite(t_process *process, void *ptr, int pos, int32_t size)
 		process->entry_point[(pos + y + MEM_SIZE) % MEM_SIZE] = target[i];
 		i--;
 		y++;
-	}
-}
-
-void	vm_dump(t_vm *vm)
-{
-	int i;
-
-	i = 0;
-	ft_printf("\n0x%x : ", i);
-	while (i < MEM_SIZE)
-	{
-		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0', vm->memory[i]);
-		if (!((i + 1) % 64))
-			ft_printf("\n0x%x : ", i);
-		i++;
 	}
 }
 
