@@ -27,6 +27,20 @@ t_env	*init_data(void)
 	return (env);
 }
 
+void	destroy_entry(void *ptr, size_t size)
+{
+	(void)size;
+	ft_memdel(&ptr);
+}
+
+void	destroy_data(t_env *env)
+{
+	if (env->instructions)
+		ft_lstdel(&env->instructions, destroy_entry);
+	if (env->labels)
+		ft_lstdel(&env->labels, destroy_entry);
+}
+
 int		main(int ac, char **av)
 {
 	t_env	*env;
@@ -39,6 +53,11 @@ int		main(int ac, char **av)
 			ft_printf("compillation done!\nname: %s\ndesc: %s\nsize: %d\n",
 				env->header.name, env->header.description, env->header.size);
 			write_output(env, *(av + 1));
+		}
+		if (env)
+		{
+			destroy_data(env);
+			ft_memdel((void**)&env);
 		}
 	}
 	else
