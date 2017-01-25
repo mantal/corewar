@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:25:22 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:44:25 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ void		vm_exec(t_vm *vm, size_t index)
 	uint8_t		op_code;
 	t_op		*op;
 	t_op_data	param;
-	t_process	*process = ((t_process*)array_get(&vm->process, index));
+	t_process	*process;
 
+	process = ((t_process*)array_get(&vm->process, index));
 	process->op_code_pos = process->position;
-	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid, process->entry_point + process->op_code_pos);
+	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid,
+					process->entry_point + process->op_code_pos);
 	vm_read(process, &op_code, sizeof(op_code));
-	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
+	if (op_code == 0 || op_code > 16)
 	{
-		warning("Process %u created by %s tried to execute an illegal instruction %d\n",
-						process->pid, process->owner->header.name, op_code);
+		warning("Process %u created by %s tried to execute an illegal \
+		instruction %d\n", process->pid, process->owner->header.name, op_code);
 		process->freeze = 1;
 		return ;
 	}
@@ -60,7 +62,7 @@ void		vm_exec(t_vm *vm, size_t index)
 		op->handler(vm, process, &param);
 	else
 		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
-	((t_process*)array_get(&vm->process, index))->freeze += op->nb_cycles;
+	((t_process *)array_get(&vm->process, index))->freeze += op->nb_cycles;
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
