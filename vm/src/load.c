@@ -35,24 +35,6 @@ static int	load_header(t_header *header, int fd)
 	return (fd);
 }
 
-#include <stdio.h>
-void		display_prog(t_program *prog)
-{
-	printf("magic: %x\n", prog->header.magic);//
-	printf("name: %s\n", prog->header.name);
-	printf("size: %d\n", prog->header.size);//
-	printf("desc: %s\n", prog->header.description);//
-
-	for(unsigned int i = 0; i < prog->header.size; i++)
-	{
-		printf("%02hhx", prog->program[i]);
-		if ((i + 1) % 16 == 0)
-			printf("\n");
-		else if ((i + 1) % 2 == 0)
-			printf(" ");
-	}
-}
-
 t_program	*load_program(const char *path, int id)
 {
 	t_program	*prog;
