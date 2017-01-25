@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/19 17:13:53 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 17:40:56 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:37:26 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void		parse_args(int argc, const char **argv, t_vm *vm)
 	{ .names = NULL }
 	};
 
+	vm->max_cycles = 1000;
 	i = options(opts, argc, argv);
 	if (i < 0)
 		ft_error_msg("Usage: corewar [-dvq] [-dump cycles] [-n id] champion\n");
