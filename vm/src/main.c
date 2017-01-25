@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/17 16:31:51 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/24 18:06:54 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	g_ftio_verbose_level = FTIO_DEBUG;
 	vm = vm_new();
 	array_init(&vm->programs, sizeof(t_program), 0);
-	parse_args(argc - 1, argv + 1, vm);
+	parse_args(argc, argv, vm);
 	i = vm->programs.size - 1;
 	while (i >= 0)
 	{

@@ -27,7 +27,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c
+SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c number_utils.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
