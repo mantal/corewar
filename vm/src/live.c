@@ -80,13 +80,14 @@ void tick_cycles(t_vm *vm)
 {
     long i;
 
-    i = vm->process.size;
+    i = (long)vm->process.size;
     while (--i >= 0)
         vm_exec(vm, array_get(&vm->process, i));
     if (vm->current_cycle == vm->next_die)
     {
+        info("%d = %d\n", vm->current_cycle, vm->next_die);
         i = 0;
-        while (i < vm->process.size)
+        while (i < (long)vm->process.size)
         {
             if (!((t_process*)array_get(&vm->process, i))->owner->alive)
             {

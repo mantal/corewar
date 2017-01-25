@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/19 17:13:53 by bel-baz           #+#    #+#             */
-/*   Updated: 2016/12/19 17:13:54 by bel-baz          ###   ########.fr       */
+/*   Created: 2017/01/24 13:29:29 by tguillem          #+#    #+#             */
+/*   Updated: 2017/01/24 13:29:29 by tguillem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ intmax_t	ft_bigatoi(const char *str)
 	return (rtn);
 }
 
-char	is_valid_number(char *nbr)
+char		is_valid_number(char *nbr)
 {
 	int			i;
 	intmax_t	tmp;
@@ -71,7 +71,7 @@ char	is_valid_number(char *nbr)
 	return (true);
 }
 
-static int getfree(t_array champions)
+static int	getfree(t_array champions)
 {
 	int		rtn;
 	char	found;
@@ -85,7 +85,8 @@ static int getfree(t_array champions)
 		found = true;
 		while (i < champions.size)
 		{
-			if (((t_program*)array_get(&champions, i))->id == rtn && (found = false))
+			if (((t_program*)array_get(&champions, i))->id == rtn &&
+				(found = false))
 				break ;
 			i++;
 		}
@@ -95,7 +96,7 @@ static int getfree(t_array champions)
 	return (found);
 }
 
-static void parse_champions(int argc, char **argv, t_vm *vm)
+static void	parse_champions(int argc, char **argv, t_vm *vm)
 {
 	int			i;
 	int			id;
@@ -127,7 +128,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 			ft_putstr(argv[i]);
 			ft_putstr("\n");
 			if (!(prg = load_program(argv[i], !input_id
-			         ? getfree(vm->programs) - 1 : id)))
+					? getfree(vm->programs) - 1 : id)))
 				ft_error_msg("Invalid champion %s\n", argv[i]);
 			array_add(&vm->programs, prg);
 			input_id = false;
@@ -136,7 +137,7 @@ static void parse_champions(int argc, char **argv, t_vm *vm)
 	}
 }
 
-void parse_args(int argc, char **argv, t_vm *vm)
+void		parse_args(int argc, char **argv, t_vm *vm)
 {
 	if (argc >= 2)
 	{

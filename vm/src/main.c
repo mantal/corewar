@@ -14,11 +14,11 @@
 #include "load.h"
 #include <ftio.h>
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_vm		*vm;
 	t_program	*prog;
-	int i;
+	int			i;
 	int			spacing;
 
 	g_ftio_verbose_level = FTIO_DEBUG;
@@ -34,7 +34,6 @@ int main(int argc, char **argv)
 		ft_memcpy(vm->memory + spacing, prog->program, prog->header.size);
 		i--;
 	}
-
 	while (true)
 		tick_cycles(vm);
 }
