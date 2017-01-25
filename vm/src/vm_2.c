@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm_2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:08:47 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:15:41 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,20 @@ void		vm_decode_params(t_process *process, t_op *op, t_op_data *param)
 	}
 }
 
-void		vm_exec(t_vm *vm, t_process *process)
+void		vm_exec(t_vm *vm, size_t index)
 {
 	uint8_t		op_code;
 	t_op		*op;
 	t_op_data	param;
+	t_process	*process = ((t_process*)array_get(&vm->process, index));
 
 	process->op_code_pos = process->position;
-	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid,
-					process->entry_point + process->op_code_pos);
+	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid, process->entry_point + process->op_code_pos);
 	vm_read(process, &op_code, sizeof(op_code));
-	if (op_code == 0 || op_code > 16)
+	if (op_code == 0 || op_code > 16)//TODO DONT HARD CODE
 	{
-		warning("Process %u created by %s tried to execute an illegal \
-		instruction %d\n", process->pid, process->owner->header.name, op_code);
+		warning("Process %u created by %s tried to execute an illegal instruction %d\n",
+						process->pid, process->owner->header.name, op_code);
 		process->freeze = 1;
 		return ;
 	}

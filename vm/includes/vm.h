@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 17:56:53 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:13:51 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void				vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 void				parse_args(int argc, const char **argv, t_vm *vm);
 void				live(t_program *prg, t_vm *vm);
 void				tick_cycles(t_vm *vm);
-void				vm_exec(t_vm *vm, t_process *process);
+void				vm_exec(t_vm *vm, size_t index);
 void				vm_dump(t_vm *vm);
 void				process_dump_registers(t_process *process);
 int					check_param(t_op *op, t_op_data *data);
@@ -80,5 +80,4 @@ int32_t				vm_get_param(t_process *process, t_op *op, uint8_t pcode);
 
 void				args_n(const char **args, void *data);
 bool				args_n_validate(const char **args, void *data);
-
 #endif

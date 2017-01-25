@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 17:38:45 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:09:09 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void		tick_cycles(t_vm *vm)
 		if (((t_process*)array_get(&vm->process, i))->freeze > 0)
 			((t_process*)array_get(&vm->process, i))->freeze--;
 		else
-			vm_exec(vm, array_get(&vm->process, i));
+			vm_exec(vm, i);
 	}
 	if (vm->current_cycle == vm->next_die)
 	{
