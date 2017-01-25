@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   program.h                                          :+:      :+:    :+:   */
+/*   args_parser_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/12 14:31:28 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 17:47:58 by dlancar          ###   ########.fr       */
+/*   Created: 2017/01/25 17:29:11 by dlancar           #+#    #+#             */
+/*   Updated: 2017/01/25 17:29:36 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROGRAM_H
-# define PROGRAM_H
+#include "vm.h"
+#include "load.h"
+#include "number_utils.h"
 
-# include <stdint.h>
-# include <stdbool.h>
-
-# define PROG_NAME_LEN 128
-# define PROG_DESC_LEN 2048
-
-typedef struct	s_header
+void	args_n(const char **args, void *data)
 {
-	unsigned int	magic;
-	char			name[PROG_NAME_LEN + 1];
-	unsigned int	size;
-	char			description[PROG_DESC_LEN + 1];
-}				t_header;
+	t_program	*prog;
 
-typedef struct	s_program
+	prog = load_program(args[2], ft_atoi(args[1]));
+	array_add(&((t_vm *)data)->programs, prog);
+}
+
+bool	args_n_validate(const char **args, void *data)
 {
-	t_header		header;
-	uint8_t			*program;
-	int				id;
-	bool			alive;
-}				t_program;
-
-#endif
+	(void)data;
+	return (is_valid_number(args[1]));
+}

@@ -23,11 +23,13 @@ GREEN=\033[33;32m
 BAR=.............................
 
 CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
-	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
-	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
+	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes -Wno-sign-compare \
+	-Wno-sign-conversion -Wno-incompatible-pointer-types-discards-qualifiers \
+	-Wno-missing-noreturn \
+	-pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c number_utils.c
+SRC= main.c load.c vm.c vm_2.c vm_memory.c args_parser.c args_parser_2.c live.c number_utils.c op.c op_2.c op_3.c op_4.c op_utils.c op_utils_2.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))

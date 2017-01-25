@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/19 17:13:53 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 14:25:45 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 17:40:56 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static int	get_new_program_id(t_array *champions)
 		found = true;
 		while (i < champions->size)
 		{
-			if (((t_program *)array_get(champions, i))->id == rtn && (found = false))
+			if (((t_program *)array_get(champions, i))->id == rtn
+							&& (found = false))
 				break ;
 			i++;
 		}
@@ -68,34 +69,25 @@ static bool	args_dump_validate(const char **args, void *data)
 	return (is_valid_number(args[1]));
 }
 
-static void	args_n(const char **args, void *data)
-{
-	t_program	*prog;
+#define N (&args_n)
+#define D (&args_dump)
+#define V (&set_verbose_level)
 
-	prog = load_program(args[2], ft_atoi(args[1]));
-	array_add(&((t_vm *)data)->programs, prog);
-}
+#define Q ((char *[]) { "n", NULL })
+#define W ((char *[]) { "dump", NULL })
 
-static bool	args_n_validate(const char **args, void *data)
-{
-	(void)data;
-	return (is_valid_number(args[1]));
-}
+#define NV (&args_n_validate)
+#define DV (&args_dump_validate)
 
 void		parse_args(int argc, const char **argv, t_vm *vm)
 {
 	t_program		*prog;
 	int				i;
-	const t_option	opts[] =
-	{
-		{ .names = (char *[]) { "q", "v", "d", NULL },
-				.callback = &set_verbose_level },
-		{ .names = (char *[]) { "n", NULL }, .args_n = 2, .callback = &args_n,
-				.validate = &args_n_validate, .data = vm },
-		{ .names = (char *[]) { "dump", NULL }, .args_n = 1,
-				.callback = &args_dump, .validate = &args_dump_validate,
-				.data = vm },
-		{ .names = NULL }
+	const t_option	opts[] = {
+	{ .names = (char *[]) { "q", "v", "d", NULL }, .callback = V },
+	{ .names = Q, .args_n = 2, .callback = N, .validate = NV, .data = vm },
+	{ .names = W, .args_n = 1, .callback = D, .validate = DV, .data = vm },
+	{ .names = NULL }
 	};
 
 	i = options(opts, argc, argv);

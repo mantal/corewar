@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 14:36:38 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/16 15:51:04 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 15:38:34 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ static void		fix_endianess(t_header *header)
 	swap_uint32(&header->size);
 }
 
-static void		check_prgm_size(const char *path, int expected_size, int given_size)
+static void		check_prgm_size(const char *path, int expected_size,
+				int given_size)
 {
 	if (given_size != expected_size)
-		ft_error_msg("File %s has a code size that differ from what its header says (%u bytes != %u bytes)\n", path, given_size, expected_size);
+		ft_error_msg("File %s has a code size that differ from what its header \
+			says (%u bytes != %u bytes)\n", path, given_size, expected_size);
 }
 
 t_program		*load_program(const char *path, int id)
@@ -80,7 +82,8 @@ t_program		*load_program(const char *path, int id)
 	check_prgm_size(path, size - sizeof(t_header), prog->header.size);
 	if (!(prog->program = ft_memalloc(prog->header.size * sizeof(uint8_t))))
 		return (NULL);
-	ft_memcpy(prog->program, content + sizeof(t_header), prog->header.size * sizeof(uint8_t));
+	ft_memcpy(prog->program, content + sizeof(t_header), prog->header.size
+					* sizeof(uint8_t));
 	prog->id = id;
 	prog->alive = false;
 	return (prog);
