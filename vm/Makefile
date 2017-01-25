@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2017/01/17 16:06:00 by bel-baz          ###   ########.fr        #
+#    Updated: 2017/01/24 18:04:54 by bel-baz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-sign-conversion -pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 
-SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c
+SRC= main.c load.c vm.c args_parser.c op.c ex_op.c live.c dumper.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
@@ -41,7 +41,7 @@ all: $(NAME)
 $(NAME): $(OUTDIR) $(OBJ)
 	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o $(NAME) -I./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon
+	@$(CC) -o $(NAME) -I./../libft -L./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))

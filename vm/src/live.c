@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/24 15:20:59 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/24 16:17:45 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ void live(t_program *prg, t_vm *vm)
 {
 	ft_printf("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
 		prg->header.name);
+	if (!prg->alive)
+	{
+		array_add(&vm->last_live, prg);
+	}
 	prg->alive = true;
 	vm->lives++;
 }
@@ -44,27 +48,19 @@ static void print_alive(t_vm *vm)
 	size_t i;
 	int alive;
 
-	i = 0;
+	i = vm->last_live.size;
 	alive = count_alive(vm);
-	if (alive == 0)
+	ft_printf(!alive ? "No players alive!\n" : "%d players alive!\n", alive);
+	ft_printf("le joueur %d(%s) a gagne\n",
+		((t_program*)array_get(&vm->programs, i - 1))->id,
+			((t_program*)array_get(&vm->programs, i - 1))->header.name);
+	ft_printf("Leaderboard: \n");
+	while (i > 0)
 	{
-		ft_printf("No players alive!\n");
-		return ;
-	}
-	while (i < vm->programs.size)
-	{
-		if (((t_program*)array_get(&vm->programs, i))->alive)
-		{
-			if (alive == 1)
-			{
-				ft_printf("%d(%s) a gagne\n", ((t_program*)array_get(&vm->programs,
-					i))->id, ((t_program*)array_get(&vm->programs, i))->header.name);
-				break ;
-			}
-			ft_printf("%d(%s) is still alive!\n", ((t_program*)array_get(&vm->programs,
-				i))->id, ((t_program*)array_get(&vm->programs, i))->header.name);
-		}
-		i++;
+		ft_printf("%d : %d(%s)\n", vm->last_live.size - i + 1, 
+			((t_program*)array_get(&vm->programs, i - 1))->id,
+				((t_program*)array_get(&vm->programs, i - 1))->header.name);
+		i--;
 	}
 }
 
@@ -108,6 +104,7 @@ void tick_cycles(t_vm *vm)
 		vm->next_die = vm->current_cycle + vm->cycles_to_die;
 		if (count_alive(vm) <= 1)
 			stop(vm);
+		array_clear(&vm->last_live);
 	}
 	vm->current_cycle++;
 	if (vm->current_cycle >= vm->max_cycles)

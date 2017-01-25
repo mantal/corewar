@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 16:40:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/24 15:21:43 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/24 18:00:38 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,22 +216,8 @@ t_vm		*vm_new(void)
 	info("Virtual memory start at position 0x%X\n", vm->memory);
 	array_init(&vm->programs, sizeof(t_program), 0);
 	array_init(&vm->process, sizeof(t_process), 0);
+	array_init(&vm->last_live, sizeof(t_program), 0);
 	return (vm);
-}
-
-void		vm_dump(t_vm *vm)
-{
-	int i;
-
-	i = 0;
-	ft_printf("\n0x%x : ", i);
-	while (i < MEM_SIZE)
-	{
-		ft_printf("%c%x ", vm->memory[i] > 15 ? 0 : '0', vm->memory[i]);
-		if (!((i + 1) % 64))
-			ft_printf("\n0x%x : ", i);
-		i++;
-	}
 }
 
 void		process_dump_registers(t_process *process)
