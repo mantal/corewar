@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 16:07:33 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 16:08:48 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void tick_cycles(t_vm *vm)
 	{
 		info("%d = %d\n", vm->current_cycle, vm->next_die);
 		i = 0;
-		while (i < vm->process.size)
+		while (i < (long)vm->process.size)
 		{
 			if (!((t_process*)array_get(&vm->process, i))->owner->alive)
 			{
