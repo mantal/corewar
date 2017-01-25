@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 14:11:36 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 17:35:54 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct	s_process
 	uint32_t		op_code_pos;
 	t_op			*current_instruction;
 	unsigned int	pid;
-	const t_program	*owner;
+	t_program		*owner;
+	int				freeze;
 }				t_process;
 
 typedef struct	s_vm

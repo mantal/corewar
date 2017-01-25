@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 16:08:48 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 17:38:45 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ void live(t_program *prg, t_vm *vm)
 	ft_printf("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
 		prg->header.name);
 	if (!prg->alive)
-	{
 		array_add(&vm->last_live, prg);
-	}
 	prg->alive = true;
 	vm->lives++;
 }
@@ -45,22 +43,26 @@ static int count_alive(t_vm *vm)
 
 static void print_alive(t_vm *vm)
 {
-	size_t i;
+	long i;
 	int alive;
 
 	i = vm->last_live.size;
 	alive = count_alive(vm);
-	ft_printf(!alive ? "No players alive!\n" : "%d players alive!\n", alive);
-	ft_printf("le joueur %d(%s) a gagne\n",
-		((t_program*)array_get(&vm->programs, i - 1))->id,
-			((t_program*)array_get(&vm->programs, i - 1))->header.name);
-	ft_printf("Leaderboard: \n");
-	while (i > 0)
+	ft_printf(!alive ? "\n\nNo players alive!\n" : "\n\n%d players alive!\n",
+		alive);
+	if (i > 0)
 	{
-		ft_printf("%d : %d(%s)\n", vm->last_live.size - i + 1, 
+		ft_printf("le joueur %d(%s) a gagne\n",
 			((t_program*)array_get(&vm->programs, i - 1))->id,
 				((t_program*)array_get(&vm->programs, i - 1))->header.name);
-		i--;
+		ft_printf("Leaderboard: \n");
+		while (i > 0)
+		{
+			ft_printf("%d : %d(%s)\n", vm->last_live.size - i + 1, 
+				((t_program*)array_get(&vm->programs, i - 1))->id,
+					((t_program*)array_get(&vm->programs, i - 1))->header.name);
+			i--;
+		}
 	}
 }
 
@@ -78,10 +80,16 @@ void tick_cycles(t_vm *vm)
 
 	i = vm->process.size;
 	while (--i >= 0)
-		vm_exec(vm, array_get(&vm->process, i));
+	{
+		if (((t_process*)array_get(&vm->process, i))->freeze > 0)
+			((t_process*)array_get(&vm->process, i))->freeze--;
+		else
+			vm_exec(vm, array_get(&vm->process, i));
+	}
 	if (vm->current_cycle == vm->next_die)
 	{
-		info("%d = %d\n", vm->current_cycle, vm->next_die);
+		info("\x1B[31m\x1B[1mDIE %d = %d\n\x1B[0m\x1B[22m", vm->current_cycle,
+			vm->next_die);
 		i = 0;
 		while (i < (long)vm->process.size)
 		{
@@ -105,6 +113,12 @@ void tick_cycles(t_vm *vm)
 		if (count_alive(vm) <= 1)
 			stop(vm);
 		array_clear(&vm->last_live);
+		i = 0;
+		while (i < (long)vm->process.size)
+		{
+			((t_process*)array_get(&vm->process, i))->owner->alive = false;
+			i++;
+		}
 	}
 	vm->current_cycle++;
 	if (vm->current_cycle >= vm->max_cycles)
