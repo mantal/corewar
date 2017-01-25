@@ -80,7 +80,9 @@ int				write_output(t_env *env, char *fname)
 	if (!write_instructions(env, fd))
 	{
 		ft_printf("Allocation error during write_output!\n");
+		close(fd);
 		return (1);
 	}
+	close(fd);
 	return (1);
 }
