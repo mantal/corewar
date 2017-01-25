@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:15:41 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:25:22 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		vm_exec(t_vm *vm, size_t index)
 		op->handler(vm, process, &param);
 	else
 		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
-	process->freeze += op->nb_cycles;
+	((t_process*)array_get(&vm->process, index))->freeze += op->nb_cycles;
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   live.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 18:09:09 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 18:25:41 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		tick_cycles(t_vm *vm)
 		{
 			if (!((t_process*)array_get(&vm->process, i))->owner->alive)
 			{
-				ft_printf("Le processus %d a été tué",
+				ft_printf("\x1B[31m\x1B[1mLe processus %d a été tué\n\x1B[0m\x1B[22m",
 					((t_process*)array_get(&vm->process, i))->pid);
 				array_remove(&vm->process, i);
 			}
