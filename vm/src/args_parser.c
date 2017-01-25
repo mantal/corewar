@@ -3,75 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   args_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tguillem <tguillem@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/24 13:29:29 by tguillem          #+#    #+#             */
-/*   Updated: 2017/01/24 13:29:29 by tguillem         ###   ########.fr       */
+/*   Created: 2016/12/19 17:13:53 by bel-baz           #+#    #+#             */
+/*   Updated: 2017/01/25 14:25:45 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "load.h"
+#include "number_utils.h"
 #include <ftstring.h>
-#include <limits.h>
+#include <args.h>
 #include <fterror.h>
-#include "libft.h"
+#include <libft.h>
 #include <ftio.h>
 
-intmax_t	ft_bigatoi(const char *str)
-{
-	char		negate;
-	intmax_t	rtn;
-	intmax_t	i;
-
-	rtn = 0;
-	i = 0;
-	negate = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-')
-		negate = 1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] && ft_isdigit(str[i]))
-	{
-		rtn *= 10;
-		if (negate)
-			rtn -= str[i] - 48;
-		else
-			rtn += str[i] - 48;
-		i++;
-	}
-	return (rtn);
-}
-
-char		is_valid_number(char *nbr)
-{
-	int			i;
-	intmax_t	tmp;
-
-	i = 0;
-	if (nbr[0] == '-' && ft_strlen(nbr) >= 11)
-		return (false);
-	if (nbr[0] != '-' && ft_strlen(nbr) >= 10)
-		return (false);
-	tmp = ft_bigatoi(nbr);
-	if (tmp > INT_MAX || tmp < INT_MIN)
-		return (false);
-	while (nbr[i])
-	{
-		if ((nbr[i] >= '0' && nbr[i] <= '9') || (i == 0 && nbr[0] == '-'))
-		{
-			i++;
-			continue ;
-		}
-		else
-			return (false);
-	}
-	return (true);
-}
-
-static int	getfree(t_array champions)
+static int	get_new_program_id(t_array *champions)
 {
 	int		rtn;
 	char	found;
@@ -83,77 +31,81 @@ static int	getfree(t_array champions)
 	{
 		i = 0;
 		found = true;
-		while (i < champions.size)
+		while (i < champions->size)
 		{
-			if (((t_program*)array_get(&champions, i))->id == rtn &&
-				(found = false))
+			if (((t_program *)array_get(champions, i))->id == rtn && (found = false))
 				break ;
 			i++;
 		}
 		if (!found)
 			rtn++;
 	}
-	return (found);
+	return (rtn);
 }
 
-static void	parse_champions(int argc, char **argv, t_vm *vm)
+static void	set_verbose_level(const char **args, void *data)
 {
-	int			i;
-	int			id;
-	char		input_id;
-	char		check_id;
-	t_program	*prg;
+	(void)data;
+	if (args[0][1] == 'v')
+		g_ftio_verbose_level = FTIO_VERBOSE;
+	if (args[0][1] == 'd')
+		g_ftio_verbose_level = FTIO_DEBUG;
+	if (args[0][1] == 'q')
+		g_ftio_verbose_level = FTIO_NONE;
+}
 
-	i = 0;
-	id = 0;
-	check_id = false;
-	input_id = false;
+static void	args_dump(const char **args, void *data)
+{
+	t_vm	*vm;
+
+	vm = data;
+	vm->max_cycles = ft_atoi(args[1]);
+}
+
+static bool	args_dump_validate(const char **args, void *data)
+{
+	(void)data;
+	return (is_valid_number(args[1]));
+}
+
+static void	args_n(const char **args, void *data)
+{
+	t_program	*prog;
+
+	prog = load_program(args[2], ft_atoi(args[1]));
+	array_add(&((t_vm *)data)->programs, prog);
+}
+
+static bool	args_n_validate(const char **args, void *data)
+{
+	(void)data;
+	return (is_valid_number(args[1]));
+}
+
+void		parse_args(int argc, const char **argv, t_vm *vm)
+{
+	t_program		*prog;
+	int				i;
+	const t_option	opts[] =
+	{
+		{ .names = (char *[]) { "q", "v", "d", NULL },
+				.callback = &set_verbose_level },
+		{ .names = (char *[]) { "n", NULL }, .args_n = 2, .callback = &args_n,
+				.validate = &args_n_validate, .data = vm },
+		{ .names = (char *[]) { "dump", NULL }, .args_n = 1,
+				.callback = &args_dump, .validate = &args_dump_validate,
+				.data = vm },
+		{ .names = NULL }
+	};
+
+	i = options(opts, argc, argv);
+	if (i < 0)
+		ft_error_msg("Usage: corewar [-dvq] [-dump cycles] [-n id] champion\n");
 	while (i < argc)
 	{
-		if (ft_strequ(argv[i], "-n") && !check_id)
-			check_id = true;
-		else if (check_id)
-		{
-			if (is_valid_number(argv[i]))
-			{
-				check_id = false;
-				id = ft_atoi(argv[i]);
-				input_id = true;
-			}
-			else
-				ft_error_msg("Invalid champion id %s\n", argv[i]);
-		}
-		else
-		{
-			ft_putstr(argv[i]);
-			ft_putstr("\n");
-			if (!(prg = load_program(argv[i], !input_id
-					? getfree(vm->programs) - 1 : id)))
-				ft_error_msg("Invalid champion %s\n", argv[i]);
-			array_add(&vm->programs, prg);
-			input_id = false;
-		}
+		prog = load_program(argv[i], get_new_program_id(&vm->programs));
+		array_add(&vm->programs, prog);
+		ft_printf("%d\n", prog->id);
 		i++;
 	}
-}
-
-void		parse_args(int argc, char **argv, t_vm *vm)
-{
-	if (argc >= 2)
-	{
-		if (ft_strequ("-dump", argv[0]))
-		{
-			if (is_valid_number(argv[1]))
-			{
-				vm->max_cycles = ft_atoi(argv[1]);
-				parse_champions(argc - 2, argv + 2, vm);
-			}
-			else
-				ft_error_msg("Invalid dump cycles specifier %s\n", argv[1]);
-		}
-		else
-			ft_error_msg("No dump specifier found! %s is invalid.\n", argv[0]);
-	}
-	else
-		ft_error_msg("No dump cycles specifier found!\n");
 }

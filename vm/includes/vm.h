@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/24 15:23:51 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/25 14:11:36 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct	s_vm
 t_vm		*vm_new(void);
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	uint32_t start);
-void		parse_args(int argc, char **argv, t_vm *vm);
+void		parse_args(int argc, const char **argv, t_vm *vm);
 void		live(t_program *prg, t_vm *vm);
 void		tick_cycles(t_vm *vm);
 void		vm_exec(t_vm *vm, t_process *process);

@@ -13,59 +13,75 @@
 #include "vm.h"
 #include "program.h"
 #include <ftendianess.h>
+#include <fterror.h>
 #include <ftio.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdint.h>
 
-static int	load_header(t_header *header, int fd)
+static off_t	get_file_size(const char *path)
 {
-	uint32_t	blbl;
-	ft_bzero(header, sizeof(t_header));
-	read(fd, &header->magic, sizeof(header->magic));//TODO CHECK RETOUR READ
+	off_t	size;
+	int		fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_error_msg("Can't read champion file %s\n", path);
+	size = lseek(fd, 0, SEEK_END);
+	close(fd);
+	return (size);
+}
+
+static char		*get_file_content(const char *path)
+{
+	int		fd;
+	off_t	size;
+	char	*res;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_error_msg("Can't read champion file %s\n", path);
+	size = lseek(fd, 0, SEEK_END);
+	lseek(fd, 0, SEEK_SET);
+	if ((res = ft_memalloc(size + 1)))
+		read(fd, res, size);
+	close(fd);
+	return (res);
+}
+
+static void		fix_endianess(t_header *header)
+{
 	swap_uint32(&header->magic);
-	if (header->magic != COREWAR_EXEC_MAGIC)
-		return (-1);
-	read(fd, &header->name, sizeof(header->name) - 1);
-	read(fd, &header->size, 4);
-	read(fd, &header->size, sizeof(header->size));
 	swap_uint32(&header->size);
-	read(fd, &header->description, sizeof(header->description) - 1);
-	read(fd, &blbl, sizeof(blbl));
-	return (fd);
 }
 
-#include <stdio.h>
-void		display_prog(t_program *prog)
+static void		check_prgm_size(const char *path, int expected_size, int given_size)
 {
-	printf("magic: %x\n", prog->header.magic);//
-	printf("name: %s\n", prog->header.name);
-	printf("size: %d\n", prog->header.size);//
-	printf("desc: %s\n", prog->header.description);//
-
-	for(unsigned int i = 0; i < prog->header.size; i++)
-	{
-		printf("%02hhx", prog->program[i]);
-		if ((i + 1) % 16 == 0)
-			printf("\n");
-		else if ((i + 1) % 2 == 0)
-			printf(" ");
-	}
+	if (given_size != expected_size)
+		ft_error_msg("File %s has a code size that differ from what its header says (%u bytes != %u bytes)\n", path, given_size, expected_size);
 }
 
-t_program	*load_program(const char *path, int id)
+t_program		*load_program(const char *path, int id)
 {
 	t_program	*prog;
-	int			fd;
+	char		*content;
+	off_t		size;
 
-	prog = ft_malloc(sizeof(t_program));
+	size = get_file_size(path);
+	if (size < sizeof(t_header))
+		ft_error_msg("File %s is too small to be a champion\n", path);
+	content = get_file_content(path);
+	if (!(prog = ft_memalloc(sizeof(t_program))))
+		return (NULL);
+	ft_memcpy(&prog->header, content, sizeof(t_header));
+	fix_endianess(&prog->header);
+	if (prog->header.magic != COREWAR_EXEC_MAGIC)
+		ft_error_msg("File %s has an invalid header\n", path);
+	check_prgm_size(path, size - sizeof(t_header), prog->header.size);
+	if (!(prog->program = ft_memalloc(prog->header.size * sizeof(uint8_t))))
+		return (NULL);
+	ft_memcpy(prog->program, content + sizeof(t_header), prog->header.size * sizeof(uint8_t));
 	prog->id = id;
 	prog->alive = false;
-	fd = ft_open(path, O_RDONLY);
-	if (load_header(&prog->header, fd) == -1)
-		return (NULL);
-	prog->program = ft_malloc(prog->header.size * sizeof(uint8_t));
-	read(fd, prog->program, prog->header.size * sizeof(uint8_t));
-	ft_close(fd);
 	return (prog);
 }

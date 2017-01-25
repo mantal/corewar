@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 14:46:35 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/01 18:16:21 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 14:01:13 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ int						options(const t_option *options, int argc,
 			return (-1);
 		}
 		if (i + opt->args_n >= argc
-				|| (opt->validate && opt->validate(&argv[i]) == false))
+				|| (opt->validate && !opt->validate(&argv[i], opt->data)))
 		{
 			ft_printf_fd(2, "%s\n", opt->usage ? opt->usage : "Invalid option");
 			return (-1);
 		}
 		if (opt->callback)
-			opt->callback(&argv[i]);
+			opt->callback(&argv[i], opt->data);
 		i += 1 + opt->args_n;
 	}
 	return (i);

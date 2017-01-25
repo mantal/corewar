@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.h                                             :+:      :+:    :+:   */
+/*   number_utils.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/05 14:47:36 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/24 18:00:47 by dlancar          ###   ########.fr       */
+/*   Created: 2017/01/25 14:08:44 by dlancar           #+#    #+#             */
+/*   Updated: 2017/01/25 14:09:29 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARGS_H
-# define ARGS_H
+#ifndef NUMBER_UTILS_H
+# define NUMBER_UTILS_H
 
-# include "stdbool.h"
+# include <stdint.h>
+# include <stdbool.h>
 
-typedef struct	s_option
-{
-	char	**names;
-	char	*usage;
-	int		args_n;
-	bool	(*validate)(const char **args, void *data);
-	void	(*callback)(const char **args, void *data);
-	void	*data;
-}				t_option;
-
-int				options(const t_option *options, int argc,
-		const char **argv);
+intmax_t	bigatoi(const char *str);
+bool		is_valid_number(const char *nbr);
 
 #endif

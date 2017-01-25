@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/22 19:04:53 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/09 17:27:44 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/25 13:51:51 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ int			ft_perror(void)
 	if (errno > 106)
 		errno = 0;
 	ft_printf_fd(STDERR, "Error : %s.\n", sys_errlist[errno]);
-	__builtin_trap();
+	return (0);
 }
