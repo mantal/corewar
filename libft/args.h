@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 14:47:36 by dlancar           #+#    #+#             */
-/*   Updated: 2016/12/09 17:46:30 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/24 18:00:47 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ typedef struct	s_option
 	char	**names;
 	char	*usage;
 	int		args_n;
-	bool	(*validate)(const char **args);
-	void	(*callback)(const char **args);
+	bool	(*validate)(const char **args, void *data);
+	void	(*callback)(const char **args, void *data);
+	void	*data;
 }				t_option;
 
 int				options(const t_option *options, int argc,
