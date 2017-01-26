@@ -48,7 +48,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@rm -rf $(OUTDIR)
 
-.PHONY: clean fclean re all $(NAME) suicide
+.PHONY: clean fclean re suicide
 
 re: fclean all
 
