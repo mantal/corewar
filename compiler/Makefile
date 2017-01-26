@@ -13,8 +13,8 @@
 UNAME=$(shell uname)
 PROJECT=COMPILER
 NAME=../asm
-LIB = ../common
-
+LIB = ../libft
+LIBFT=$(LIB)/libft.a
 RED=\033[33;91m
 ORANGE=\033[33;93m
 AQUA=\033[33;36m
@@ -27,7 +27,10 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 	-Wno-sign-conversion -pipe -O0 -g3 \
 	-I./includes
 
-SRC = main.c reader.c parser.c op_utils.c errors.c instructions_parser.c utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c write_output.c encoder.c parameters_parser_utils.c errors_2.c errors_3.c
+SRC = main.c reader.c parser.c op_utils.c errors.c instructions_parser.c \
+	  utils.c parameters_parser.c validator.c check_instructions.c ft_atoli.c \
+	  write_output.c encoder.c parameters_parser_utils.c errors_2.c errors_3.c \
+	  op.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))
@@ -38,17 +41,19 @@ DIGITS=$(shell echo $$(($(shell echo $(WORDS) | wc -c) - 1)))
 
 all: $(NAME)
 
-$(NAME): $(OUTDIR) $(OBJ)
-	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
+$(LIBFT):
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o $(NAME) -I./../libft -I./../common/includes -L./../common -L./../libft $(CFLAGS) $(OBJ) -lcommon -lft
+
+$(NAME): $(LIBFT) $(OUTDIR) $(OBJ)
+	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
+	@$(CC) -o $(NAME) -I./../libft -L./../libft $(CFLAGS) $(OBJ) -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
 	@$(eval pd=$(shell echo $$(( ($(compteur) * ($(shell echo $(BAR) | wc -c)  - $(DIGITS))/ $(WORDS))))))
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(AQUA)$(BAR)$(GRAY)]" $(compteur)
 	@printf "\r					$(AQUA)[$(RED)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS) \r$(GRAY)[$(GREEN)%.*s>" $(compteur) $(pd) $(subst  .,=,$(BAR))
-	@$(CC) -I ../libft -I ../common/includes -o $@ -c $? $(CFLAGS)
+	@$(CC) -I ../libft -o $@ -c $? $(CFLAGS)
 
 clean:
 	@(cd $(LIB) && $(MAKE) $@);

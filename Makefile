@@ -14,37 +14,37 @@ UNAME=$(shell uname)
 PROJECT=COREWAR
 NAME=corewar
 LIB =libft
-COMMON=common/libcommon.a
+LIBFT=libft/libft.a
 COMPILER=asm
 VM=corewar
 
 all: $(COMPILER) $(VM)
 
-$(COMMON):
-	@(cd common && $(MAKE) -s)
+$(LIBFT):
+	@(cd libft && $(MAKE) -s)
 
-$(COMPILER): $(COMMON)
+$(COMPILER): $(LIBFT)
 	@(cd compiler && $(MAKE) -s)
 
-$(VM): $(COMMON)
+$(VM): $(LIBFT)
 	@(cd vm && $(MAKE) -s)
 
 clean:
 	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
+	@(cd libft && $(MAKE) $@);
 	@(cd vm && $(MAKE) $@);
 	@rm -f $(OBJ)
 
 fclean: clean
 	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
+	@(cd libft && $(MAKE) $@);
 	@(cd vm && $(MAKE) $@);
 
 re: fclean all
 
 suicide: fclean
 	@(cd compiler && $(MAKE) $@);
-	@(cd common && $(MAKE) $@);
+	@(cd libft && $(MAKE) $@);
 	@(cd vm && $(MAKE) $@);
 
 .PHONY: clean fclean re suicide

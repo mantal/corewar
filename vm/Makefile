@@ -13,7 +13,8 @@
 UNAME=$(shell uname)
 PROJECT=VM
 NAME=../corewar
-LIB = ../common
+LIB = ../libft
+LIBFT=$(LIB)/libft.a
 
 RED=\033[33;91m
 ORANGE=\033[33;93m
@@ -41,10 +42,12 @@ DIGITS=$(shell echo $$(($(shell echo $(WORDS) | wc -c) - 1)))
 
 all: $(NAME)
 
-$(NAME): $(OUTDIR) $(OBJ)
-	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
+$(LIBFT):
 	@(cd $(LIB) && $(MAKE) -s);
-	@$(CC) -o $(NAME) -I./../libft -L./../libft -L./../common $(CFLAGS) $(OBJ) -lcommon -lft
+
+$(NAME): $(LIBFT) $(OUTDIR) $(OBJ)
+	@printf "\r					$(AQUA)[$(GREEN)$(PROJECT)$(AQUA)] %.$(DIGITS)d$(GRAY)/$(AQUA)$(WORDS)$(GRAY) \r[$(GREEN)$(subst .,=,$(BAR))$(GRAY)]\n" $(WORDS)
+	@$(CC) -o $(NAME) -I./../libft -L./../libft $(CFLAGS) $(OBJ) -lft
 
 $(OUTDIR)/%.o: $(SRCDIR)/%.c
 	@$(eval compteur=$(shell echo $$(($(compteur)+1))))
