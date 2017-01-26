@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2017/01/25 18:38:04 by bel-baz          ###   ########.fr        #
+#    Updated: 2017/01/26 17:10:18 by bel-baz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
 
 SRC= main.c load.c vm.c vm_2.c vm_memory.c args_parser.c args_parser_2.c \
 	live.c number_utils.c op.c op_2.c op_3.c op_4.c op_utils.c op_utils_2.c \
-	dumper.c live2.c vm_exec.c
+	dumper.c live2.c vm_exec.c color.c
 SRCDIR= src
 OUTDIR= out
 SRCS= $(addprefix $(SRCDIR)/, $(SRC))

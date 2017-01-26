@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 12:09:10 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 16:50:02 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	main(int argc, const char **argv)
 		ft_memcpy(vm->memory + spacing, prog->program, prog->header.size);
 		i--;
 	}
+	assign_colors(vm);
 	while (true)
 		tick_cycles(vm);
 }

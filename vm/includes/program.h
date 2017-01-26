@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   program.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 14:31:28 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 17:47:58 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 16:48:53 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct	s_program
 	uint8_t			*program;
 	int				id;
 	bool			alive;
+	char			*color;
 }				t_program;
 
 #endif

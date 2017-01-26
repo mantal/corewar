@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:13:51 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/26 18:10:56 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_process
 	unsigned int	pid;
 	t_program		*owner;
 	int				freeze;
+	t_vm			*vm;
 }					t_process;
 
 typedef struct		s_vm
@@ -47,6 +48,7 @@ typedef struct		s_vm
 	t_array		process;
 	uint8_t		memory[MEM_SIZE];
 	int			dump;
+	int8_t		memory_owner[MEM_SIZE];
 	int			current_cycle;
 	int			max_cycles;
 	int			lives;
@@ -80,4 +82,6 @@ int32_t				vm_get_param(t_process *process, t_op *op, uint8_t pcode);
 
 void				args_n(const char **args, void *data);
 bool				args_n_validate(const char **args, void *data);
+
+void				assign_colors(t_vm *vm);
 #endif

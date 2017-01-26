@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/26 12:06:10 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 18:05:45 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <ftio.h>
 #include <stdlib.h>
 
-static int	count_alive(t_vm *vm)
+int			count_alive(t_vm *vm)
 {
 	size_t	i;
 	int		rtn;
@@ -29,31 +29,6 @@ static int	count_alive(t_vm *vm)
 		i++;
 	}
 	return (rtn);
-}
-
-static void	print_alive(t_vm *vm)
-{
-	long	i;
-	int		alive;
-
-	i = vm->last_live.size;
-	alive = count_alive(vm);
-	ft_printf(!alive ? "\n\nNo players alive!\n" : "\n\n%d players alive!\n",
-		alive);
-	if (i > 0)
-	{
-		ft_printf("le joueur %d(%s) a gagne\n",
-			((t_program*)array_get(&vm->programs, i - 1))->id,
-				((t_program*)array_get(&vm->programs, i - 1))->header.name);
-		ft_printf("Leaderboard: \n");
-		while (i > 0)
-		{
-			ft_printf("%d : %d(%s)\n", vm->last_live.size - i + 1,
-				((t_program*)array_get(&vm->programs, i - 1))->id,
-					((t_program*)array_get(&vm->programs, i - 1))->header.name);
-			i--;
-		}
-	}
 }
 
 static void	stop(t_vm *vm)

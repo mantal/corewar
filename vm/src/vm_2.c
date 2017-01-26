@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 12:07:12 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 17:53:27 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	process.pid = vm->process.size;
 	process.freeze = 0;
 	process.current_instruction = NULL;
+	process.vm = vm;
 	array_add(&vm->process, &process);
 }
 
@@ -52,6 +53,7 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 	fork.pid = vm->process.size;
 	fork.freeze = 0;
 	fork.current_instruction = NULL;
+	fork.vm = vm;
 	array_add(&vm->process, &fork);
 }
 
@@ -66,8 +68,10 @@ t_vm		*vm_new(void)
 	vm->cycles_to_die = CYCLE_TO_DIE;
 	vm->next_die = vm->cycles_to_die;
 	ft_bzero(vm->memory, sizeof(vm->memory));
+	ft_bzero(vm->memory_owner, sizeof(vm->memory_owner));
 	debug("Virtual memory start at position 0x%X\n", vm->memory);
 	array_init(&vm->programs, sizeof(t_program), 0);
+	array_init(&vm->last_live, sizeof(t_program), 0);
 	array_init(&vm->process, sizeof(t_process), 0);
 	return (vm);
 }

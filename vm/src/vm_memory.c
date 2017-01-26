@@ -3,17 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   vm_memory.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 15:47:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 12:07:24 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 18:02:28 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include <ftio.h>
 
-void	vm_memread(t_process *process, void *ptr, int pos, size_t size)
+static int8_t	get_prog_idx(t_process *process)
+{
+	int8_t i;
+
+	i = 0;
+	while (i < (int8_t)process->vm->programs.size)
+	{
+		if (((t_program*)array_get(&process->vm->programs, i))->id ==
+			process->owner->id)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void			vm_memread(t_process *process, void *ptr, int pos, size_t size)
 {
 	char		*target;
 	size_t		i;
@@ -27,7 +42,8 @@ void	vm_memread(t_process *process, void *ptr, int pos, size_t size)
 	}
 }
 
-void	vm_memwrite(t_process *process, void *ptr, int pos, int32_t size)
+void			vm_memwrite(t_process *process, void *ptr, int pos,
+	int32_t size)
 {
 	char	*target;
 	int32_t	y;
@@ -39,12 +55,14 @@ void	vm_memwrite(t_process *process, void *ptr, int pos, int32_t size)
 	while (i >= 0)
 	{
 		process->entry_point[(pos + y + MEM_SIZE) % MEM_SIZE] = target[i];
+		process->vm->memory_owner[(pos + y + MEM_SIZE) % MEM_SIZE] =
+			get_prog_idx(process) + 1;
 		i--;
 		y++;
 	}
 }
 
-void	process_dump_registers(t_process *process)
+void			process_dump_registers(t_process *process)
 {
 	int i;
 
