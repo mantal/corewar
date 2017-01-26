@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 11:44:39 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 12:09:10 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, const char **argv)
 	int			i;
 	int			spacing;
 
-	g_ftio_verbose_level = FTIO_WARNING;
+	g_ftio_verbose_level = FTIO_INFO;
 	vm = vm_new();
 	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc, argv, vm);

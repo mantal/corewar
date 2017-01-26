@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 17:15:12 by bel-baz           #+#    #+#             */
-/*   Updated: 2017/01/25 18:37:40 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/26 12:06:10 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	tick_cycles2(t_vm *vm)
 	{
 		if (!((t_process*)array_get(&vm->process, i))->owner->alive)
 		{
-			ft_printf("\x1B[35mLe processus %d a été tué\n\x1B[0m",
+			info("\x1B[35mLe processus %d a été tué\n\x1B[0m",
 				((t_process*)array_get(&vm->process, i))->pid);
 			array_remove(&vm->process, i);
 		}

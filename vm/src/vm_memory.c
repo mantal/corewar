@@ -6,7 +6,7 @@
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 15:47:26 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:10:43 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 12:07:24 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void	process_dump_registers(t_process *process)
 	i = -1;
 	while (++i < REG_NUMBER)
 	{
-		ft_printf("0X%X: r%d = %u\n", process->reg + i, i, process->reg[i]);
+		verbose("0X%X: r%d = %u\n", process->reg + i, i, process->reg[i]);
 	}
 }
