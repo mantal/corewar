@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 18:10:56 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/26 18:39:03 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,14 @@ void				vm_memread(t_process *process, void *ptr, int pos,
 				size_t size);
 void				vm_memwrite(t_process *process, void *ptr, int pos,
 				int32_t size);
-
 uint8_t				get_param_size(t_op *op, uint8_t pcode);
 void				get_param_pcode(uint8_t raw_data, uint8_t pcodes[4]);
 void				swap_uint16(uint16_t *n);
 void				vm_read(t_process *process, void *p, size_t size);
 int32_t				vm_get_param(t_process *process, t_op *op, uint8_t pcode);
-
 void				args_n(const char **args, void *data);
 bool				args_n_validate(const char **args, void *data);
-
 void				assign_colors(t_vm *vm);
+void				default_color(int i, t_vm *vm, int spacing, int size);
+char				*get_color(size_t index);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 16:50:02 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/26 18:26:25 by bel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	main(int argc, const char **argv)
 	int			spacing;
 
 	vm = vm_new();
-	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc, argv, vm);
 	i = vm->programs.size - 1;
+	assign_colors(vm);
 	while (i >= 0)
 	{
 		spacing = ((MEM_SIZE / vm->programs.size) * i) % MEM_SIZE;
@@ -32,9 +32,9 @@ int	main(int argc, const char **argv)
 		live(prog, vm, 1);
 		vm_new_process(vm, prog, vm->memory, spacing);
 		ft_memcpy(vm->memory + spacing, prog->program, prog->header.size);
+		default_color(i, vm, spacing, prog->header.size);
 		i--;
 	}
-	assign_colors(vm);
 	while (true)
 		tick_cycles(vm);
 }
