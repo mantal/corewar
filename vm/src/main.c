@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 15:56:52 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:38:12 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 11:44:39 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "load.h"
 #include <ftio.h>
 
-int	main(int argc, char **argv)
+int	main(int argc, const char **argv)
 {
 	t_vm		*vm;
 	t_program	*prog;

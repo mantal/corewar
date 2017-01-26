@@ -23,9 +23,8 @@ GREEN=\033[33;32m
 BAR=.............................
 
 CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
-	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes -Wno-sign-compare \
-	-Wno-sign-conversion -Wno-incompatible-pointer-types-discards-qualifiers \
-	-Wno-missing-noreturn \
+	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
+	-Wno-sign-conversion -Wno-missing-noreturn -Wno-cast-qual\
 	-pipe -O0 -g3 -fsanitize=address \
 	-I./includes
 

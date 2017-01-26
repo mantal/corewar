@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 11:40:15 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 11:49:44 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	t_process	process;
 
 	process.carry = false;
-	process.owner = prog;
+	process.owner = (t_program *)prog;
 	ft_bzero(process.reg, sizeof(uint32_t) * REG_NUMBER);
 	process.reg[0] = prog->id;
 	process.entry_point = pc;
