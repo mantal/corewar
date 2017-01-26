@@ -21,7 +21,6 @@ int	main(int argc, const char **argv)
 	int			i;
 	int			spacing;
 
-	g_ftio_verbose_level = FTIO_INFO;
 	vm = vm_new();
 	array_init(&vm->programs, sizeof(t_program), 0);
 	parse_args(argc, argv, vm);

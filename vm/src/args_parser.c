@@ -46,20 +46,25 @@ static int	get_new_program_id(t_array *champions)
 
 static void	set_verbose_level(const char **args, void *data)
 {
-	(void)data;
+	t_vm	*vm;
+
+	vm = (t_vm*)data;
 	if (args[0][1] == 'v')
 		g_ftio_verbose_level = FTIO_VERBOSE;
 	if (args[0][1] == 'd')
 		g_ftio_verbose_level = FTIO_DEBUG;
 	if (args[0][1] == 'q')
 		g_ftio_verbose_level = FTIO_NONE;
+	else
+		vm->dump = 1;
 }
 
 static void	args_dump(const char **args, void *data)
 {
 	t_vm	*vm;
 
-	vm = data;
+	vm = (t_vm*)data;
+	vm->dump = 1;
 	vm->max_cycles = ft_atoi(args[1]);
 }
 
@@ -84,7 +89,7 @@ void		parse_args(int argc, const char **argv, t_vm *vm)
 	t_program		*prog;
 	int				i;
 	const t_option	opts[] = {
-	{ .names = (char *[]) { "q", "v", "d", NULL }, .callback = V },
+	{ .names = (char *[]) { "q", "v", "d", NULL }, .callback = V, .data = vm},
 	{ .names = Q, .args_n = 2, .callback = N, .validate = NV, .data = vm },
 	{ .names = W, .args_n = 1, .callback = D, .validate = DV, .data = vm },
 	{ .names = NULL }

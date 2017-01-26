@@ -18,16 +18,16 @@ void		vm_dump(t_vm *vm)
 	int i;
 
 	i = 0;
-	verbose("\n0x%x   : ", i);
+	ft_printf("\n0x%x   : ", i);
 	while (i < MEM_SIZE)
 	{
-		verbose("%s%x ", vm->memory[i] > 15 ? "" : "0", vm->memory[i]);
+		ft_printf("%s%x ", vm->memory[i] > 15 ? "" : "0", vm->memory[i]);
 		if (!((i + 1) % 64) && i + 1 < MEM_SIZE)
 		{
 			if (i < 256)
-				verbose("\n0x%x  : ", i);
+				ft_printf("\n0x%x  : ", i);
 			else
-				verbose("\n0x%x : ", i);
+				ft_printf("\n0x%x : ", i);
 		}
 		i++;
 	}

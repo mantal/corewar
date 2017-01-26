@@ -58,7 +58,8 @@ static void	print_alive(t_vm *vm)
 
 static void	stop(t_vm *vm)
 {
-	vm_dump(vm);
+	if (vm->dump)
+		vm_dump(vm);
 	print_alive(vm);
 	ft_printf("Game over\n");
 	exit(0);

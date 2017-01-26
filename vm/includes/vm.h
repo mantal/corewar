@@ -46,6 +46,7 @@ typedef struct		s_vm
 	t_array		programs;
 	t_array		process;
 	uint8_t		memory[MEM_SIZE];
+	int			dump;
 	int			current_cycle;
 	int			max_cycles;
 	int			lives;
