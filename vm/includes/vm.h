@@ -59,7 +59,6 @@ t_vm				*vm_new(void);
 void				vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	uint32_t start);
 void				parse_args(int argc, const char **argv, t_vm *vm);
-void				live(t_program *prg, t_vm *vm);
 void				tick_cycles(t_vm *vm);
 void				vm_exec(t_vm *vm, size_t index);
 void				vm_dump(t_vm *vm);

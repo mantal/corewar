@@ -13,6 +13,6 @@
 #ifndef LIVE_H
 # define LIVE_H
 
-void live(t_program *prg, t_vm *vm);
+void live(t_program *prg, t_vm *vm, int startup);
 void tick_cycles(t_vm *vm);
 #endif

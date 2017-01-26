@@ -30,6 +30,7 @@ int	main(int argc, const char **argv)
 	{
 		spacing = ((MEM_SIZE / vm->programs.size) * i) % MEM_SIZE;
 		prog = array_get(&vm->programs, i);
+		live(prog, vm, 1);
 		vm_new_process(vm, prog, vm->memory, spacing);
 		ft_memcpy(vm->memory + spacing, prog->program, prog->header.size);
 		i--;

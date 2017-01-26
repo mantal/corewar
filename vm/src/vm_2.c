@@ -46,25 +46,35 @@ void		vm_exec(t_vm *vm, size_t index)
 	t_process	*process;
 
 	process = ((t_process*)array_get(&vm->process, index));
-	process->op_code_pos = process->position;
-	debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid,
-					process->entry_point + process->op_code_pos);
-	vm_read(process, &op_code, sizeof(op_code));
-	if (op_code == 0 || op_code > 16)
+	if (process->current_instruction)
 	{
-		warning(IIS, process->pid, process->owner->header.name, op_code);
-		process->freeze = 1;
-		return ;
+		op = process->current_instruction;
+		vm_decode_params(process, op, &param);
+		if (check_param(op, &param))
+			op->handler(vm, process, &param);
+		else
+			warning(IAS, process->pid);
+		process->current_instruction = NULL;
 	}
-	op = &g_op_tab[op_code - 1];
-	process->current_instruction = op;
-	debug("[%u] Instruction %s\n", process->pid, op->name);
-	vm_decode_params(process, op, &param);
-	if (check_param(process->current_instruction, &param))
-		op->handler(vm, process, &param);
 	else
-		warning(IAS, process->pid);
-	((t_process *)array_get(&vm->process, index))->freeze += op->nb_cycles;
+	{
+		process->op_code_pos = process->position;
+		debug("[%u] >>  Reading opcode (PC: 0x%X)\n", process->pid,
+					process->entry_point + process->op_code_pos);
+		vm_read(process, &op_code, sizeof(op_code));
+		if (op_code == 0 || op_code > 16)
+		{
+			warning(IIS, process->pid, process->owner->header.name, op_code);
+			process->freeze = 1;
+			process->current_instruction = NULL;
+			return ;
+		}
+		op = &g_op_tab[op_code - 1];
+		process->current_instruction = op;
+		debug("[%u] Instruction %s, freezing %d cycles\n", process->pid,
+			op->name, op->nb_cycles);
+		process->freeze = op->nb_cycles - 1;
+	}
 }
 
 void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
@@ -80,6 +90,7 @@ void		vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
 	process.position = start;
 	process.pid = vm->process.size;
 	process.freeze = 0;
+	process.current_instruction = NULL;
 	array_add(&vm->process, &process);
 }
 
@@ -104,6 +115,7 @@ void		vm_fork(t_vm *vm, t_process *process, int16_t pc, int long_mode)
 	fork.position = position;
 	fork.pid = vm->process.size;
 	fork.freeze = 0;
+	fork.current_instruction = NULL;
 	array_add(&vm->process, &fork);
 }
 
@@ -112,6 +124,7 @@ t_vm		*vm_new(void)
 	t_vm	*vm;
 
 	vm = ft_malloc(sizeof(t_vm));
+	ft_bzero(vm, sizeof(t_vm));
 	vm->lives = 0;
 	vm->current_cycle = 0;
 	vm->cycles_to_die = CYCLE_TO_DIE;

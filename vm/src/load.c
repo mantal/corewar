@@ -88,6 +88,5 @@ t_program		*load_program(const char *path, int id)
 	ft_memcpy(prog->program, content + sizeof(t_header), prog->header.size
 					* sizeof(uint8_t));
 	prog->id = id;
-	prog->alive = false;
 	return (prog);
 }

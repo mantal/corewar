@@ -15,10 +15,11 @@
 #include <ftio.h>
 #include <stdlib.h>
 
-void		live(t_program *prg, t_vm *vm)
+void		live(t_program *prg, t_vm *vm, int startup)
 {
-	info("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
-		prg->header.name);
+	if (!startup)
+		info("un processus dit que le joueur %d(%s) est en vie\n", prg->id,
+			prg->header.name);
 	if (!prg->alive)
 		array_add(&vm->last_live, prg);
 	prg->alive = true;

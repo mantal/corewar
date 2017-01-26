@@ -60,7 +60,7 @@ void	op_live(t_vm *vm, t_process *process, t_op_data *data)
 		i++;
 	}
 	if (prgm)
-		live(prgm, vm);
+		live(prgm, vm, 0);
 }
 
 void	op_ld(t_vm *vm, t_process *process, t_op_data *data)

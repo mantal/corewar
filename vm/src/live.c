@@ -97,11 +97,11 @@ void		tick_cycles(t_vm *vm)
 	long i;
 
 	i = vm->process.size;
+	debug("It's cycle %d\n", vm->current_cycle + 1);
 	while (--i >= 0)
 	{
-		if (((t_process*)array_get(&vm->process, i))->freeze > 0)
-			((t_process*)array_get(&vm->process, i))->freeze--;
-		else
+		((t_process*)array_get(&vm->process, i))->freeze--;
+		if (((t_process*)array_get(&vm->process, i))->freeze <= 0)
 			vm_exec(vm, i);
 	}
 	if (vm->current_cycle == vm->next_die)
