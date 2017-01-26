@@ -12,14 +12,19 @@
 
 #include "vm.h"
 #include "load.h"
+#include "fterror.h"
 #include "number_utils.h"
 
 void	args_n(const char **args, void *data)
 {
 	t_program	*prog;
+	t_vm		*vm;
 
+	vm = (t_vm *)data;
+	if (vm->programs.size >= 4)
+		ft_error_msg("Too many champions\n");
 	prog = load_program(args[2], ft_atoi(args[1]));
-	array_add(&((t_vm *)data)->programs, prog);
+	array_add(&vm->programs, prog);
 }
 
 bool	args_n_validate(const char **args, void *data)

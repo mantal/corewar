@@ -96,9 +96,10 @@ void		parse_args(int argc, const char **argv, t_vm *vm)
 		ft_error_msg("Usage: corewar [-dvq] [-dump cycles] [-n id] champion\n");
 	while (i < argc)
 	{
+		if (vm->programs.size >= 4)
+			ft_error_msg("Too many champions\n");
 		prog = load_program(argv[i], get_new_program_id(&vm->programs));
 		array_add(&vm->programs, prog);
-		ft_printf("%d\n", prog->id);
 		i++;
 	}
 }
