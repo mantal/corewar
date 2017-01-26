@@ -73,7 +73,7 @@ t_program		*load_program(const char *path, int id)
 	off_t		size;
 
 	size = get_file_size(path);
-	if (size < (off_t)sizeof(t_header))
+	if (size <= (off_t)sizeof(t_header))
 		ft_error_msg("File %s is too small to be a champion\n", path);
 	content = get_file_content(path);
 	if (!(prog = ft_memalloc(sizeof(t_program))))
