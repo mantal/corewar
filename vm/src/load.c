@@ -60,7 +60,10 @@ static void		check_prgm_size(const char *path, int expected_size,
 {
 	if (given_size != expected_size)
 		ft_error_msg("File %s has a code size that differ from what its header \
-			says (%u bytes != %u bytes)\n", path, given_size, expected_size);
+			says (%d bytes != %d bytes)\n", path, given_size, expected_size);
+	if (given_size > CHAMP_MAX_SIZE)
+		ft_error_msg("File %s has too large a code (%d bytes > %d bytes)\n",
+			path, given_size, CHAMP_MAX_SIZE);
 }
 
 t_program		*load_program(const char *path, int id)
