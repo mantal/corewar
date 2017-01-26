@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/25 16:16:45 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/25 18:44:25 by dlancar          ###   ########.fr       */
+/*   Updated: 2017/01/26 11:40:15 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void		vm_decode_params(t_process *process, t_op *op, t_op_data *param)
 	}
 }
 
+#define IIS ("Process %u from %s tried to execute an illegal instruction %d\n")
+#define IAS ("[%u] Invalid arguments!\nInstruction skipped!\n")
+
 void		vm_exec(t_vm *vm, size_t index)
 {
 	uint8_t		op_code;
@@ -49,8 +52,7 @@ void		vm_exec(t_vm *vm, size_t index)
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)
 	{
-		warning("Process %u created by %s tried to execute an illegal \
-		instruction %d\n", process->pid, process->owner->header.name, op_code);
+		warning(IIS, process->pid, process->owner->header.name, op_code);
 		process->freeze = 1;
 		return ;
 	}
@@ -61,7 +63,7 @@ void		vm_exec(t_vm *vm, size_t index)
 	if (check_param(process->current_instruction, &param))
 		op->handler(vm, process, &param);
 	else
-		warning("[%u] Invalid arguments!\nInstruction skipped!\n", process->pid);
+		warning(IAS, process->pid);
 	((t_process *)array_get(&vm->process, index))->freeze += op->nb_cycles;
 }
 
