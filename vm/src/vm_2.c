@@ -61,7 +61,7 @@ void		vm_exec(t_vm *vm, size_t index)
 	if (check_param(process->current_instruction, &param))
 		op->handler(vm, process, &param);
 	else
-		warning("[%u] Invalid arguments!\nInstruction skipped!\n");
+		warning("[%u] Invalid arguments!\nInstruction skipped!\n", process->pid);
 	((t_process *)array_get(&vm->process, index))->freeze += op->nb_cycles;
 }
 
