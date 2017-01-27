@@ -94,8 +94,8 @@ void	op_st(t_vm *vm, t_process *process, t_op_data *data)
 	}
 	info("[%d]: st r%d %d\n", process->pid, data->params[0], data->params[1]);
 	if (indirect_write)
-		vm_memwrite(process, input_one, process->op_code_pos + data->params[1],
-						sizeof(*input_one));
+		vm_memwrite(process, input_one, process->op_code_pos +
+						(data->params[1] % IDX_MOD), sizeof(*input_one));
 	else
 		*output = *input_one;
 }

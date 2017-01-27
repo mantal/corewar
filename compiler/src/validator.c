@@ -17,7 +17,7 @@ void			check_header(t_env *env)
 	if (!(*env->header.name))
 		ft_printf("Warning: program name not defined!\n");
 	if (!(*env->header.description))
-		ft_printf("Warning: program description not defined!\n");
+		ft_printf("Warning: program description not defined or empty!\n");
 	if ((env->header.size = env->current_offset) > CHAMP_MAX_SIZE)
 		ft_printf("Warning: program is %d bytes too long\n",
 				env->header.size - CHAMP_MAX_SIZE);

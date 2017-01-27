@@ -37,7 +37,7 @@ char			error_invalid_parameter_format(t_env *env, char *end, int i)
 
 int				error_wrong_param_type(t_inst *inst, int index)
 {
-	ft_printf("error: instruction cannot have a %s\n",
+	ft_printf("error: instruction %s cannot have a %s\n",
 			g_op_tab[inst->index].name, get_param_type(inst, index));
 	return (1);
 }
