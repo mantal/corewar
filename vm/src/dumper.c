@@ -41,9 +41,9 @@ void		vm_dump(t_vm *vm)
 		if (!((i + 1) % 64) && i + 1 < MEM_SIZE)
 		{
 			if (i < 256)
-				ft_printf("\n0x%x  : ", i);
+				ft_printf("\n0x%x  : ", i + 1);
 			else
-				ft_printf("\n0x%x : ", i);
+				ft_printf("\n0x%x : ", i + 1);
 		}
 		i++;
 	}
