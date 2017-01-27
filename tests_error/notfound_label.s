@@ -1,4 +1,4 @@
-.name "Test 6"
+.name "Test 5"
 .comment ""
 zjmp %:_start
 zjmp %:404

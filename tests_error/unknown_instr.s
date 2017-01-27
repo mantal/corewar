@@ -1,4 +1,4 @@
-.name "Test 1"
+.name "Test 7"
 .comment ""
 
 _start:
