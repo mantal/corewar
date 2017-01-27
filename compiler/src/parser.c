@@ -22,7 +22,7 @@ static int		extract_quote_str(t_env *env, char **line, char **end,
 		return (error_opening_quote_expected(env));
 	if ((*end = ft_strchr(*line + 1, '"')) == NULL)
 		return (error_closing_quote_expected(env));
-	if ((*end - 1) - (*line + 1) > max_length)
+	if ((*end - 1) - (*line + 1) >= max_length)
 		return (error_string_too_long(env, max_length));
 	return (0);
 }

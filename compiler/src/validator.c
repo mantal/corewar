@@ -15,7 +15,10 @@
 void			check_header(t_env *env)
 {
 	if (!(*env->header.name))
+	{
 		ft_printf("Warning: program name not defined!\n");
+		ft_memcpy(env->header.name, "Unnamed", 7);
+	}
 	if (!(*env->header.description))
 		ft_printf("Warning: program description not defined or empty!\n");
 	if ((env->header.size = env->current_offset) > CHAMP_MAX_SIZE)
