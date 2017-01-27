@@ -50,9 +50,11 @@ int		main(int ac, char **av)
 		env = init_data();
 		if (env && parse_file(env, *(av + 1)) && is_data_correct(env))
 		{
-			ft_printf("compillation done!\nname: %s\ndesc: %s\nsize: %d\n",
+			if (write_output(env, *(av + 1)))
+				ft_printf("compillation done!\nname: %s\ndesc: %s\nsize: %d\n",
 				env->header.name, env->header.description, env->header.size);
-			write_output(env, *(av + 1));
+			else
+				ft_printf("Writting error\n");
 		}
 		if (env)
 		{
