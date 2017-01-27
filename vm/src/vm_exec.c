@@ -27,7 +27,7 @@ static void	vm_exec_freeze(t_process *process)
 	vm_read(process, &op_code, sizeof(op_code));
 	if (op_code == 0 || op_code > 16)
 	{
-		warning(IIS, process->pid, process->owner->header.name, op_code);
+		verbose(IIS, process->pid, process->owner->header.name, op_code);
 		process->freeze = 1;
 		process->current_instruction = NULL;
 		return ;
@@ -75,7 +75,7 @@ void		vm_exec(t_vm *vm, size_t index)
 		if (check_param(op, &param))
 			op->handler(vm, process, &param);
 		else
-			warning(IAS, process->pid);
+			verbose(IAS, process->pid);
 		process->current_instruction = NULL;
 	}
 	else

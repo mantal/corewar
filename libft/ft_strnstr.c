@@ -19,7 +19,7 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 	if (!s1)
 		return (NULL);
 	if (!s2 || !*s2)
-		return (s1);
+		return ((char*)s1);
 	while (*s1 && n)
 	{
 		n--;
@@ -28,7 +28,7 @@ char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 		{
 			i++;
 			if (!s2[i])
-				return (s1);
+				return ((char*)s1);
 		}
 		s1++;
 	}

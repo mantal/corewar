@@ -22,7 +22,7 @@ char	*ft_strstr(const char *s1, const char *s2)
 		while (*s2)
 		{
 			if (*s1 == *s2)
-				return (s2);
+				return ((char*)s2);
 			s2++;
 		}
 		s2 = temp;

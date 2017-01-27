@@ -17,14 +17,14 @@ static char		*skip_white_space(const char *s)
 {
 	while (s && ft_isspace(*s))
 		s++;
-	return (s);
+	return ((char*)s);
 }
 
 static char		*skip_nul(const char *s)
 {
 	char	*str;
 
-	str = s;
+	str = (char*)s;
 	while (*str == '0')
 		str++;
 	return (str);

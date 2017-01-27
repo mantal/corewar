@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strnchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlancar <dlancar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,5 +19,5 @@ char	*ft_strnchr(const char *s, int c, size_t n)
 	i = 0;
 	while (s[i] && s[i] != c && i < n)
 		i++;
-	return (s[i] == c ? &s[i] : NULL);
+	return (s[i] == c ? (char*)&s[i] : NULL);
 }

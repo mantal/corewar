@@ -26,7 +26,7 @@ uint8_t		get_param_size(t_op *op, uint8_t pcode)
 		return (IND_DATA_SIZE);
 	else if (pcode == DIR_CODE && !op->has_idx)
 		return (DIR_DATA_SIZE);
-	warning("Invalid pcode %x\n", pcode);
+	verbose("Invalid pcode %x\n", pcode);
 	return (0);
 }
 

@@ -18,7 +18,7 @@ char	*ft_strrchr(const char *s, int c)
 
 	target = NULL;
 	if (!s)
-		return (target);
+		return ((char*)target);
 	while (*s)
 	{
 		if (*s == c)
@@ -27,5 +27,5 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	if (!c)
 		target = s;
-	return (target);
+	return ((char*)target);
 }

@@ -6,7 +6,7 @@
 #    By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/09 16:55:59 by bel-baz           #+#    #+#              #
-#    Updated: 2017/01/26 17:10:18 by bel-baz          ###   ########.fr        #
+#    Updated: 2017/01/27 12:54:32 by tguillem         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,7 @@ GRAY=\033[33;39m
 GREEN=\033[33;32m
 BAR=.............................
 
-CFLAGS = -std=c11 -Wall -Wextra -Wconditional-uninitialized -Weverything \
-	-Wno-shorten-64-to-32 -Wno-padded -Wno-missing-prototypes \
-	-Wno-sign-conversion -Wno-missing-noreturn -Wno-cast-qual\
-	-pipe -O0 -g3 -fsanitize=address \
-	-I./includes
+CFLAGS = -std=c11 -Wall -Wextra -Werror -pipe -I./includes
 
 SRC= main.c load.c vm.c vm_2.c vm_memory.c args_parser.c args_parser_2.c \
 	live.c number_utils.c op.c op_2.c op_3.c op_4.c op_utils.c op_utils_2.c \
