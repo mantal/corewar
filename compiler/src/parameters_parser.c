@@ -40,6 +40,8 @@ char			parse_parameter(t_env *env, char *line, char *next,
 	t_param	*param;
 
 	size = (int)(next - line);
+	if (size <= 0)
+		return (error_invalid_parameter_format(env, line, no_param));
 	if (size > PARAM_LENGTH)
 		return (-1);
 	param = &env->current_instruction.params[no_param];
