@@ -6,7 +6,7 @@
 /*   By: bel-baz <bel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 17:56:18 by dlancar           #+#    #+#             */
-/*   Updated: 2017/01/26 18:39:03 by bel-baz          ###   ########.fr       */
+/*   Updated: 2017/01/27 11:47:19 by dlancar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,6 @@
 # define NBR_LIVE     21
 # define MAX_CHECKS   10
 
-typedef struct		s_process
-{
-	uint32_t		reg[REG_NUMBER + 1];
-	bool			carry;
-	uint8_t			*entry_point;
-	uint32_t		position;
-	uint32_t		op_code_pos;
-	t_op			*current_instruction;
-	unsigned int	pid;
-	t_program		*owner;
-	int				freeze;
-	t_vm			*vm;
-}					t_process;
-
 typedef struct		s_vm
 {
 	t_array		programs;
@@ -57,6 +43,20 @@ typedef struct		s_vm
 	int			last_die_decr;
 	t_array		last_live;
 }					t_vm;
+
+typedef struct		s_process
+{
+	uint32_t		reg[REG_NUMBER + 1];
+	bool			carry;
+	uint8_t			*entry_point;
+	uint32_t		position;
+	uint32_t		op_code_pos;
+	t_op			*current_instruction;
+	unsigned int	pid;
+	t_program		*owner;
+	int				freeze;
+	t_vm			*vm;
+}					t_process;
 
 t_vm				*vm_new(void);
 void				vm_new_process(t_vm *vm, const t_program *prog, uint8_t *pc,
