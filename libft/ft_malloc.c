@@ -15,13 +15,11 @@
 #include "malloc_.h"
 #include <stdlib.h>
 
-bool	g_malloc_use = true;
-
 void	*ft_malloc(size_t size)
 {
 	void	*ptr;
 
-	ptr = g_malloc_use ? malloc(size) : malloc_(size);
+	ptr = malloc(size);
 	if (!ptr)
 	{
 		ft_error();
